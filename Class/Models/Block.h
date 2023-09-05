@@ -26,7 +26,15 @@ public: // メンバ関数
 
 	void Initialize();	// 初期化
 	//void Update();	// 更新
-	void Draw();	// 描画
+	
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="translate">座標</param>
+	/// <param name="scele">大きさ</param>
+	/// <param name="rotate">回転</param>
+	/// <param name="textureNum">textureManagerで作ったenum型の番号</param>
+	void Draw(Vector3 translate, Vector3 scele, Vector3 rotate, int textureNum);	// 描画
 
 private: // メンバ変数
 	// Material
