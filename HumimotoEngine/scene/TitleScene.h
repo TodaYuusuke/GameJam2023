@@ -4,6 +4,8 @@
 #include "../object/Sprite.h"
 #include "../object/Sphere.h"
 
+#include "../../Class/Models/Block.h"
+
 class GameManager;
 
 class TitleScene : public IScene
@@ -19,4 +21,6 @@ private:
 	int textureNum_;
 	Input* input_;
 	Vector3 pos_;
+
+	Block block;
 };

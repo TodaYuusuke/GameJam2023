@@ -1,20 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Class\Models\Block.cpp">
+      <Filter>Class\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Class\Effect\EffectManager.cpp">
+      <Filter>Class\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Class\Effect\IEffect.cpp">
+      <Filter>Class\Effect</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Class">
+      <UniqueIdentifier>{4dda4601-90f3-4b65-9d71-41a1d284ef8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Class\Models">
+      <UniqueIdentifier>{43ae8e53-a04d-4b00-bfe6-d4c4529648cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Class\Effect">
+      <UniqueIdentifier>{9973370a-bfed-4747-a419-9232e424ebdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Class\Effect\override">
+      <UniqueIdentifier>{8703b573-1868-4aa9-aff5-024eabf478d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="Class\Models\Block.h">
+      <Filter>Class\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Class\Effect\EffectManager.h">
+      <Filter>Class\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Class\Effect\IEffect.h">
+      <Filter>Class\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

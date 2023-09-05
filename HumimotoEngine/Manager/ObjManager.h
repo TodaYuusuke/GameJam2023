@@ -3,11 +3,8 @@
 #include <vector>
 
 enum ModelName {
-	PLANE,
-	AXIS,
-	MULTIMESH,
-	MULTIMATERIAL,
-	BUNNY
+	block,
+	player,
 };
 
 class ObjManager
@@ -15,7 +12,7 @@ class ObjManager
 public:
 	static ObjManager* GetInstance();
 
-	//ModelData* GetObjModelData() { return modelData_; }
+	ModelData* GetObjModelData() { return modelData_; }
 
 	void Initialize();
 
@@ -24,7 +21,7 @@ public:
 	ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
 
 private:
-	//static const int32_t kMaxModelData = 5;
-	//ModelData modelData_[kMaxModelData];
+	static const int32_t kMaxModelData = 2;
+	ModelData modelData_[kMaxModelData];
 };
 
