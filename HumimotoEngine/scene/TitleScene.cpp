@@ -8,6 +8,8 @@ void TitleScene::Initialize() {
 	sphere_->Initialize();
 	textureNum_ = UVCHEKER;
 	input_ = Input::GetInstance();
+	block_ = new Block();
+	block_->Initialize();
 }
 
 void TitleScene::Update() {
@@ -17,9 +19,11 @@ void TitleScene::Update() {
 void TitleScene::Draw() {
 	sprite_->Draw(pos_, textureNum_);
 	sphere_->Draw();
+	block_->Draw();
 }
 
 void TitleScene::Finalize() {
 	delete sprite_;
 	delete sphere_;
+	delete block_;
 }

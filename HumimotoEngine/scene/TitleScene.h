@@ -23,6 +23,6 @@ private:
 	Input* input_;
 	Vector3 pos_;
 
-	Block block_;
+	Block* block_;
 	EffectManager effectManager_;
 };
