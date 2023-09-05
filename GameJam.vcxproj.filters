@@ -11,6 +11,12 @@
     <ClCompile Include="Class\Effect\override\template.cpp">
       <Filter>Class\Effect\override</Filter>
     </ClCompile>
+    <ClCompile Include="Class\Map\Map.cpp">
+      <Filter>Class\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Class\Map\BlockMass.cpp">
+      <Filter>Class\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Class">
@@ -25,6 +31,9 @@
     <Filter Include="Class\Effect\override">
       <UniqueIdentifier>{8703b573-1868-4aa9-aff5-024eabf478d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Class\Map">
+      <UniqueIdentifier>{b72c4c42-7452-4711-85ef-41e2ccddb736}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Class\Models\Block.h">
@@ -38,6 +47,12 @@
     </ClInclude>
     <ClInclude Include="Class\Effect\override\template.h">
       <Filter>Class\Effect\override</Filter>
+    </ClInclude>
+    <ClInclude Include="Class\Map\Map.h">
+      <Filter>Class\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Class\Map\BlockMass.h">
+      <Filter>Class\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
