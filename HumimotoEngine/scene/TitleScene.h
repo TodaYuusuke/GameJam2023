@@ -5,6 +5,7 @@
 #include "../object/Sphere.h"
 
 #include "../../Class/Models/Block.h"
+#include "../../Class/Effect/EffectManager.h"
 
 class GameManager;
 
@@ -22,5 +23,6 @@ private:
 	Input* input_;
 	Vector3 pos_;
 
-	Block block;
+	Block block_;
+	EffectManager effectManager_;
 };

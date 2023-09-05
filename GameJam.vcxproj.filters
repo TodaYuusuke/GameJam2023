@@ -8,8 +8,8 @@
     <ClCompile Include="Class\Effect\EffectManager.cpp">
       <Filter>Class\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Class\Effect\IEffect.cpp">
-      <Filter>Class\Effect</Filter>
+    <ClCompile Include="Class\Effect\override\template.cpp">
+      <Filter>Class\Effect\override</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -35,6 +35,9 @@
     </ClInclude>
     <ClInclude Include="Class\Effect\IEffect.h">
       <Filter>Class\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Class\Effect\override\template.h">
+      <Filter>Class\Effect\override</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
