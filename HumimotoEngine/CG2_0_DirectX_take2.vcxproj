@@ -98,7 +98,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="..\Class\Effect\EffectManager.cpp" />
     <ClCompile Include="..\Class\Effect\override\template.cpp" />
-    <ClCompile Include="..\Class\Map\BlockMass.cpp" />
     <ClCompile Include="..\Class\Map\Map.cpp" />
     <ClCompile Include="..\Class\Models\Block.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
@@ -152,7 +151,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="..\Class\Effect\EffectManager.h" />
     <ClInclude Include="..\Class\Effect\IEffect.h" />
     <ClInclude Include="..\Class\Effect\override\template.h" />
-    <ClInclude Include="..\Class\Map\BlockMass.h" />
     <ClInclude Include="..\Class\Map\Map.h" />
     <ClInclude Include="..\Class\Models\Block.h" />
     <ClInclude Include="base\DirectXCommon.h" />

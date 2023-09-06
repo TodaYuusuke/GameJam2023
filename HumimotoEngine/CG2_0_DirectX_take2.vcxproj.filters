@@ -71,19 +71,19 @@
       <UniqueIdentifier>{64cb0be1-4cde-45a1-94d0-fbe462d1991a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Class">
-      <UniqueIdentifier>{4ec6b907-17f2-40f0-8910-74066cd9b681}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Class\Models">
-      <UniqueIdentifier>{ceeb0f4c-ca67-47fc-a744-88f5626ded99}</UniqueIdentifier>
+      <UniqueIdentifier>{81096123-0359-4911-bd99-d048d92978d8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Class\Effect">
-      <UniqueIdentifier>{6258adef-f04f-42ce-b868-7c35780063ea}</UniqueIdentifier>
+      <UniqueIdentifier>{f0fc83ba-fd51-4574-8f90-1aa5355359b0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Class\Effect\override">
-      <UniqueIdentifier>{6529966f-8253-4e6a-81d7-e65c1674316e}</UniqueIdentifier>
+      <UniqueIdentifier>{5ee674a5-052a-4ea0-b2bd-9c3dc2940b0a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Class\Map">
-      <UniqueIdentifier>{d40b4f13-b794-4f03-b78b-ef880dbbfacf}</UniqueIdentifier>
+      <UniqueIdentifier>{c79acc17-865a-48eb-a08c-eb3b02c6df12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Class\Models">
+      <UniqueIdentifier>{9243ecbe-a632-4793-969e-4f6a4e0d5dd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -184,11 +184,11 @@
     <ClCompile Include="..\Class\Effect\override\template.cpp">
       <Filter>Class\Effect\override</Filter>
     </ClCompile>
-    <ClCompile Include="..\Class\Map\BlockMass.cpp">
-      <Filter>Class\Map</Filter>
-    </ClCompile>
     <ClCompile Include="..\Class\Map\Map.cpp">
       <Filter>Class\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Class\Models\Block.cpp">
+      <Filter>Class\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,11 +341,11 @@
     <ClInclude Include="..\Class\Effect\override\template.h">
       <Filter>Class\Effect\override</Filter>
     </ClInclude>
-    <ClInclude Include="..\Class\Map\BlockMass.h">
-      <Filter>Class\Map</Filter>
-    </ClInclude>
     <ClInclude Include="..\Class\Map\Map.h">
       <Filter>Class\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Class\Models\Block.h">
+      <Filter>Class\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
