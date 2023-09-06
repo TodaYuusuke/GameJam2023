@@ -42,6 +42,10 @@ public: // メンバ関数
 	/// <param name="textureNum">textureManagerで作ったenum型の番号</param>
 	void Draw(Vector3 translate, Vector3 scele, Vector3 rotate, int textureNum);	// 描画
 
+public:
+	// SRT
+	Transform transform_;
+
 private: // メンバ変数
 	// Material
 	Material* materialData_;
@@ -55,7 +59,6 @@ private: // メンバ変数
 	// カメラ
 	Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource_;
 	TransformationMatrix* transformationMatrixData_;
-	Transform transform_;
 	Matrix4x4 viewMatrix_;
 	Matrix4x4 projectionMatrix_;
 	Matrix4x4 worldViewProjectionMatrix_;
