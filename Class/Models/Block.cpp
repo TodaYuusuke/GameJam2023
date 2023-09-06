@@ -87,11 +87,7 @@ void Block::Initialize() {
 	materialData_->uvTransform = MakeIdentity4x4();
 }
 
-void Block::Draw(Vector3 translate, Vector3 scele, Vector3 rotate, int textureNum) {
-	transform_.translate = translate;
-	transform_.scale = scele;
-	transform_.rotate = rotate;
-
+void Block::Draw(int textureNum) {
 	uvTransformMatrix_ = MakeScaleMatrix(uvTransform_.scale);
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeRotateZMatrix(uvTransform_.rotate.z));
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranslateMatrix(uvTransform_.translate));
