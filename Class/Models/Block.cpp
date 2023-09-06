@@ -100,10 +100,6 @@ void Block::Draw(Vector3 translate, Vector3 scele, Vector3 rotate, int textureNu
 	// �J����
 	//transform_.rotate.y += 0.006f;
 	transformationMatrixData_->World = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
-	
-	if (parent_) {
-		transformationMatrixData_->World = Multiply(transformationMatrixData_->World, parent_->World);
-	}
 
 	transformationMatrixData_->WVP = Multiply(transformationMatrixData_->World, *Camera::GetInstance()->GetTransformationMatrixData());
 	transformationMatrixData_->World = MakeIdentity4x4();

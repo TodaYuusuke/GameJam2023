@@ -45,8 +45,6 @@ public: // メンバ関数
 public:
 	// SRT
 	Transform transform_;
-	// ペアレント
-	const TransformationMatrix* parent_ = nullptr;
 
 private: // メンバ変数
 	// Material

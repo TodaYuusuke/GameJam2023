@@ -24,6 +24,5 @@ private:
 	Vector3 pos_;
 
 	Block* block_;
-	Block* parentBlock_;
 	EffectManager effectManager_;
 };
