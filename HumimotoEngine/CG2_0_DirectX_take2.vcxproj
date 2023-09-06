@@ -96,6 +96,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Class\Effect\EffectManager.cpp" />
+    <ClCompile Include="..\Class\Effect\override\template.cpp" />
+    <ClCompile Include="..\Class\Map\BlockMass.cpp" />
+    <ClCompile Include="..\Class\Map\Map.cpp" />
+    <ClCompile Include="..\Class\Models\Block.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="components\Audio.cpp" />
@@ -144,6 +149,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Class\Effect\EffectManager.h" />
+    <ClInclude Include="..\Class\Effect\IEffect.h" />
+    <ClInclude Include="..\Class\Effect\override\template.h" />
+    <ClInclude Include="..\Class\Map\BlockMass.h" />
+    <ClInclude Include="..\Class\Map\Map.h" />
+    <ClInclude Include="..\Class\Models\Block.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="components\Audio.h" />
@@ -192,9 +203,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <Text Include="externals\ImGui\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GameJam.vcxproj">
-      <Project>{61e04bb7-d4eb-42d1-a034-1cac0ee3a2b1}</Project>
-    </ProjectReference>
     <ProjectReference Include="externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
