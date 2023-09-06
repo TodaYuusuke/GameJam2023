@@ -1,32 +1,25 @@
 #include "Block.h"
-#include "../../HumimotoEngine/Manager/ImGuiManager.h"
-#include <cassert>
-#define _USE_MATH_DEFINES
-#include <math.h>
-#include "../../HumimotoEngine/Manager/ObjManager.h"
-#include "../../HumimotoEngine/utility/GlobalVariables.h"
-#include "../../HumimotoEngine/components/camera/Camera.h"
 
 Microsoft::WRL::ComPtr<ID3D12Resource> Block::CreateBufferResource(const Microsoft::WRL::ComPtr<ID3D12Device>& device, size_t sizeInBytes) {
 	HRESULT hr;
-	// ’¸“_ƒŠƒ\[ƒX—p‚Ìƒq[ƒv‚Ìİ’è
+	// ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½\ï¿½[ï¿½Xï¿½pï¿½Ìƒqï¿½[ï¿½vï¿½Ìİ’ï¿½
 	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
-	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD; // UploadHeap‚ğg‚¤
-	// ’¸“_ƒŠƒ\[ƒX‚Ìİ’è
+	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD; // UploadHeapï¿½ï¿½gï¿½ï¿½
+	// ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½\ï¿½[ï¿½Xï¿½Ìİ’ï¿½
 	D3D12_RESOURCE_DESC vertexResourceDesc{};
-	// ƒoƒbƒtƒ@ƒ\[ƒXBƒeƒNƒXƒ`ƒƒ‚Ìê‡‚Í‚Ü‚½•Ê‚Ìİ’è‚ğ‚·‚é
+	// ï¿½oï¿½bï¿½tï¿½@ï¿½\ï¿½[ï¿½Xï¿½Bï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Ìê‡ï¿½Í‚Ü‚ï¿½ï¿½Ê‚Ìİ’ï¿½ï¿½ï¿½ï¿½ï¿½
 	vertexResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	vertexResourceDesc.Width = sizeInBytes; // ƒŠƒ\[ƒX‚ÌƒTƒCƒYB¡‰ñ‚ÍVector4‚ğ3’¸“_•ª
-	// ƒoƒbƒtƒ@‚Ìê‡‚Í‚±‚ê‚©‚ç‚Í1‚É‚·‚éŒˆ‚Ü‚è
+	vertexResourceDesc.Width = sizeInBytes; // ï¿½ï¿½ï¿½\ï¿½[ï¿½Xï¿½ÌƒTï¿½Cï¿½Yï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½Vector4ï¿½ï¿½3ï¿½ï¿½ï¿½_ï¿½ï¿½
+	// ï¿½oï¿½bï¿½tï¿½@ï¿½Ìê‡ï¿½Í‚ï¿½ï¿½ê‚©ï¿½ï¿½ï¿½1ï¿½É‚ï¿½ï¿½éŒˆï¿½Ü‚ï¿½
 	vertexResourceDesc.Height = 1;
 	vertexResourceDesc.DepthOrArraySize = 1;
 	vertexResourceDesc.MipLevels = 1;
 	vertexResourceDesc.SampleDesc.Count = 1;
-	// ƒoƒbƒtƒ@‚Ìê‡‚Í‚±‚ê‚É‚·‚éŒˆ‚Ü‚è
+	// ï¿½oï¿½bï¿½tï¿½@ï¿½Ìê‡ï¿½Í‚ï¿½ï¿½ï¿½É‚ï¿½ï¿½éŒˆï¿½Ü‚ï¿½
 	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertexResource;
-	// ÀÛ‚É’¸“_ƒŠƒ\[ƒX‚ğì‚é
+	// ï¿½ï¿½ï¿½Û‚É’ï¿½ï¿½_ï¿½ï¿½ï¿½\ï¿½[ï¿½Xï¿½ï¿½ï¿½ï¿½
 	hr = device.Get()->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE,
 		&vertexResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vertexResource));
 	assert(SUCCEEDED(hr));
@@ -39,33 +32,33 @@ void Block::CreateVertexResource() {
 }
 
 void Block::CreateVertexBufferView() {
-	// ƒŠƒ\[ƒX‚Ìæ“ª‚ÌƒAƒhƒŒƒX‚©‚çg‚¤
+	// ï¿½ï¿½ï¿½\ï¿½[ï¿½Xï¿½Ìæ“ªï¿½ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½gï¿½ï¿½
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
-	// g—p‚·‚éƒŠƒ\[ƒX‚ÌƒTƒCƒY‚Í’¸“_3‚Â•ª‚ÌƒTƒCƒY
+	// ï¿½gï¿½pï¿½ï¿½ï¿½éƒŠï¿½\ï¿½[ï¿½Xï¿½ÌƒTï¿½Cï¿½Yï¿½Í’ï¿½ï¿½_3ï¿½Â•ï¿½ï¿½ÌƒTï¿½Cï¿½Y
 	vertexBufferView_.SizeInBytes = sizeof(VertexData) * UINT(modelData_.vertices.size());
-	// 1’¸“_“–‚½‚è‚ÌƒTƒCƒY
+	// 1ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌƒTï¿½Cï¿½Y
 	vertexBufferView_.StrideInBytes = sizeof(VertexData);
 }
 
 void Block::CreateMaterialResource() {
 	materialResource_ = CreateBufferResource(DirectXCommon::GetInstance()->GetDevice(), sizeof(Material)).Get();
-	// ƒ}ƒeƒŠƒAƒ‹‚Éƒf[ƒ^‚ğ‘‚«‚Ş
+	// ï¿½}ï¿½eï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Éƒfï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	materialData_ = nullptr;
-	// ‘‚«‚Ş‚½‚ß‚ÌƒAƒhƒŒƒX‚ğæ“¾
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş‚ï¿½ï¿½ß‚ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½ï¿½æ“¾
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 }
 
 void Block::CreateWvpResource() {
-	// 1‚Â•ª‚ÌƒTƒCƒY‚ğ—pˆÓ‚·‚é
+	// 1ï¿½Â•ï¿½ï¿½ÌƒTï¿½Cï¿½Yï¿½ï¿½pï¿½Ó‚ï¿½ï¿½ï¿½
 	transformationMatrixResource_ = CreateBufferResource(DirectXCommon::GetInstance()->GetDevice(), sizeof(TransformationMatrix)).Get();
-	// ‘‚«‚Ş‚½‚ß‚ÌƒAƒhƒŒƒX‚ğæ“¾
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş‚ï¿½ï¿½ß‚ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½ï¿½æ“¾
 	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
-	// ’PˆÊs—ñ‚ğ‘‚«‚ñ‚Å‚¨‚­
+	// ï¿½Pï¿½Êsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½
 	transformationMatrixData_->WVP = MakeIdentity4x4();
 }
 
 void Block::Initialize() {
-	// ƒ‚ƒfƒ‹‚ğ“Ç‚İ‚İ
+	// ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½ï¿½Ç‚İï¿½ï¿½ï¿½
 	modelData_ = ObjManager::GetInstance()->GetObjModelData()[block];
 
 	CreateVertexResource();
@@ -76,7 +69,7 @@ void Block::Initialize() {
 
 	CreateVertexBufferView();
 
-	// ‘‚«‚Ş‚½‚ß‚ÌƒAƒhƒŒƒX‚ğæ“¾
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş‚ï¿½ï¿½ß‚ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½ï¿½æ“¾
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
 
@@ -87,10 +80,10 @@ void Block::Initialize() {
 		{0.0f,0.0f,0.0f}
 	};
 
-	// Lighting‚·‚é‚©
+	// Lightingï¿½ï¿½ï¿½é‚©
 	materialData_->enableLighting = true;
 
-	// uvTransforms—ñ‚Ì‰Šú‰»
+	// uvTransformï¿½sï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½
 	materialData_->uvTransform = MakeIdentity4x4();
 }
 
@@ -104,7 +97,7 @@ void Block::Draw(Vector3 translate, Vector3 scele, Vector3 rotate, int textureNu
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranslateMatrix(uvTransform_.translate));
 	materialData_->uvTransform = uvTransformMatrix_;
 
-	// ƒJƒƒ‰
+	// ï¿½Jï¿½ï¿½ï¿½ï¿½
 	//transform_.rotate.y += 0.006f;
 	transformationMatrixData_->World = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
 	transformationMatrixData_->WVP = Multiply(transformationMatrixData_->World, *Camera::GetInstance()->GetTransformationMatrixData());
@@ -112,19 +105,19 @@ void Block::Draw(Vector3 translate, Vector3 scele, Vector3 rotate, int textureNu
 
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
 
-	// ƒRƒ}ƒ“ƒh‚ğÏ‚Ş
-	DirectXCommon::GetInstance()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBV‚ğİ’è
-	// Œ`ó‚ğİ’èBPSO‚Éİ’è‚µ‚Ä‚¢‚é‚à‚Ì‚Æ‚Í‚Ü‚½•ÊB“¯‚¶‚à‚Ì‚ğİ’è‚·‚é‚Æl‚¦‚Ä‚¨‚¯‚Î—Ç‚¢
+	// ï¿½Rï¿½}ï¿½ï¿½ï¿½hï¿½ï¿½Ï‚ï¿½
+	DirectXCommon::GetInstance()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBVï¿½ï¿½İ’ï¿½
+	// ï¿½`ï¿½ï¿½ï¿½İ’ï¿½BPSOï¿½Éİ’è‚µï¿½Ä‚ï¿½ï¿½ï¿½ï¿½Ì‚Æ‚Í‚Ü‚ï¿½ï¿½ÊBï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚ï¿½İ’è‚·ï¿½ï¿½Ælï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½Î—Ç‚ï¿½
 	DirectXCommon::GetInstance()->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	// DescriptorTable‚Ìİ’è
+	// DescriptorTableï¿½Ìİ’ï¿½
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetTextureSrvHandleGPU()[textureNum]);
 
-	// wvp‚ÌCBuffer‚ÌêŠ‚ğİ’è
+	// wvpï¿½ï¿½CBufferï¿½ÌêŠï¿½ï¿½İ’ï¿½
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResource_.Get()->GetGPUVirtualAddress());
 
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(3, Light::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
 
-	// ƒ}ƒeƒŠƒAƒ‹CBuffer‚ÌêŠ‚ğİ’è
+	// ï¿½}ï¿½eï¿½ï¿½ï¿½Aï¿½ï¿½CBufferï¿½ÌêŠï¿½ï¿½İ’ï¿½
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource_.Get()->GetGPUVirtualAddress());
 	DirectXCommon::GetInstance()->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }

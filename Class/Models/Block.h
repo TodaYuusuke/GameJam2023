@@ -1,4 +1,11 @@
 #pragma once
+#include <d3d12.h>
+#include "../../HumimotoEngine/Manager/ImGuiManager.h"
+#include <cassert>
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include "../../HumimotoEngine/utility/GlobalVariables.h"
+#include "../../HumimotoEngine/components/camera/Camera.h"
 #include "../../HumimotoEngine/Manager/ObjManager.h"
 #include "../../HumimotoEngine/math/Matrix4x4.h"
 #include "../../HumimotoEngine/VertexData.h"
@@ -6,7 +13,6 @@
 #include "../../HumimotoEngine/TransformationMatrix.h"
 #include "../../HumimotoEngine/Material.h"
 #include "../../HumimotoEngine/MaterialData.h"
-#include <d3d12.h>
 #include "../../HumimotoEngine/Manager/TextureManager.h"
 #include "../../HumimotoEngine/base/DirectXCommon.h"
 
