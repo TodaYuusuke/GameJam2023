@@ -67,4 +67,7 @@ private: // メンバ変数
 	ModelData modelData_;
 	// ワールドトランスフォーム
 	//WorldTransform worldTransform_;
+
+	// ペアレント
+
 };

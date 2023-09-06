@@ -81,7 +81,7 @@ void Block::Initialize() {
 	};
 
 	// Lighting���邩
-	materialData_->enableLighting = true;
+	materialData_->enableLighting = false;
 
 	// uvTransform�s��̏�����
 	materialData_->uvTransform = MakeIdentity4x4();
@@ -104,6 +104,7 @@ void Block::Draw(Vector3 translate, Vector3 scele, Vector3 rotate, int textureNu
 	transformationMatrixData_->World = MakeIdentity4x4();
 
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
+
 
 	// �R�}���h��ς�
 	DirectXCommon::GetInstance()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBV��ݒ�
