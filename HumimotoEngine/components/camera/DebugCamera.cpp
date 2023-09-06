@@ -17,47 +17,47 @@ void DebugCamera::initialize() {
 
 void DebugCamera::Update() {
 #pragma region 平行移動
-	//// Keyboard
-	//if (Input::GetInstance()->PressKey(DIK_LEFT)) {
-	//	const float speed = -0.1f;
+	// Keyboard
+	if (Input::GetInstance()->PressKey(DIK_LEFT)) {
+		const float speed = -0.1f;
 
-	//	Vector3 move = { speed,0,0 };
+		Vector3 move = { speed,0,0 };
 
-	//	// 移動ベクトルをカメラの角度だけ回転
-	//	move = TransformNormal(move, worldTransform_);
+		// 移動ベクトルをカメラの角度だけ回転
+		move = TransformNormal(move, worldTransform_);
 
-	//	translation_ = Add(translation_, move);
-	//}
-	//if (Input::GetInstance()->PressKey(DIK_RIGHT)) {
-	//	const float speed = 0.1f;
+		translation_ = Add(translation_, move);
+	}
+	if (Input::GetInstance()->PressKey(DIK_RIGHT)) {
+		const float speed = 0.1f;
 
-	//	Vector3 move = { speed,0,0 };
+		Vector3 move = { speed,0,0 };
 
-	//	// 移動ベクトルをカメラの角度だけ回転
-	//	move = TransformNormal(move, worldTransform_);
+		// 移動ベクトルをカメラの角度だけ回転
+		move = TransformNormal(move, worldTransform_);
 
-	//	translation_ = Add(translation_, move);
-	//}
-	//if (Input::GetInstance()->PressKey(DIK_UP)) {
-	//	const float speed = 0.1f;
+		translation_ = Add(translation_, move);
+	}
+	if (Input::GetInstance()->PressKey(DIK_UP)) {
+		const float speed = 0.1f;
 
-	//	Vector3 move = { 0,0, speed };
+		Vector3 move = { 0,0, speed };
 
-	//	// 移動ベクトルをカメラの角度だけ回転
-	//	move = TransformNormal(move, worldTransform_);
+		// 移動ベクトルをカメラの角度だけ回転
+		move = TransformNormal(move, worldTransform_);
 
-	//	translation_ = Add(translation_, move);
-	//}
-	//if (Input::GetInstance()->PressKey(DIK_DOWN)) {
-	//	const float speed = -0.1f;
+		translation_ = Add(translation_, move);
+	}
+	if (Input::GetInstance()->PressKey(DIK_DOWN)) {
+		const float speed = -0.1f;
 
-	//	Vector3 move = { 0,0, speed };
+		Vector3 move = { 0,0, speed };
 
-	//	// 移動ベクトルをカメラの角度だけ回転
-	//	move = TransformNormal(move, worldTransform_);
+		// 移動ベクトルをカメラの角度だけ回転
+		move = TransformNormal(move, worldTransform_);
 
-	//	translation_ = Add(translation_, move);
-	//}
+		translation_ = Add(translation_, move);
+	}
 
 	//// GamePad
 	//XINPUT_STATE joyState{};
@@ -81,19 +81,19 @@ void DebugCamera::Update() {
 
 #pragma region 回転
 
-	//// keyboard
-	//if (Input::GetInstance()->PressKey(DIK_W)) {
-	//	rotation_ = Add(rotation_, { -0.01f,0,0 });
-	//}
-	//if (Input::GetInstance()->PressKey(DIK_A)) {
-	//	rotation_ = Add(rotation_, { 0,-0.01f,0 });
-	//}
-	//if (Input::GetInstance()->PressKey(DIK_S)) {
-	//	rotation_ = Add(rotation_, { 0.01f,0,0 });
-	//}
-	//if (Input::GetInstance()->PressKey(DIK_D)) {
-	//	rotation_ = Add(rotation_, { 0,0.01f,0 });
-	//}
+	// keyboard
+	if (Input::GetInstance()->PressKey(DIK_W)) {
+		rotation_ = Add(rotation_, { -0.01f,0,0 });
+	}
+	if (Input::GetInstance()->PressKey(DIK_A)) {
+		rotation_ = Add(rotation_, { 0,-0.01f,0 });
+	}
+	if (Input::GetInstance()->PressKey(DIK_S)) {
+		rotation_ = Add(rotation_, { 0.01f,0,0 });
+	}
+	if (Input::GetInstance()->PressKey(DIK_D)) {
+		rotation_ = Add(rotation_, { 0,0.01f,0 });
+	}
 
 	////GamePad
 	//if (Input::GetInstance()->GetJoystickState(0, joyState)) {

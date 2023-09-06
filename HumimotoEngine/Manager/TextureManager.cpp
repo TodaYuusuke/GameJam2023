@@ -22,6 +22,7 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	// 画像の読み込み
 	mipImages_[UVCHEKER] = LoadTexture("resources/uvChecker.png");
 	mipImages_[MONSTERBALL] = LoadTexture("resources/monsterBall.png");
+	mipImages_[BLOCK] = LoadTexture("../Resources/block/block.png");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
 	for (uint32_t i = 0; i < kMaxImages; i++) {
@@ -52,7 +53,7 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 
 void TextureManager::Initialize() {
 	// モデルを読み込み
-	//modelData_ = ObjManager::GetInstance()->GetObjModelData();
+	modelData_ = ObjManager::GetInstance()->GetObjModelData();
 	TransferTexture(DirectXCommon::GetInstance()->GetSrvDescriptorHeap());
 
 	CreateDepthStencilView();

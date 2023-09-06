@@ -2,57 +2,5 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Class\Models\Block.cpp">
-      <Filter>Class\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="Class\Effect\EffectManager.cpp">
-      <Filter>Class\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Class\Effect\override\template.cpp">
-      <Filter>Class\Effect\override</Filter>
-    </ClCompile>
-    <ClCompile Include="Class\Map\Map.cpp">
-      <Filter>Class\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Class\Map\BlockMass.cpp">
-      <Filter>Class\Map</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Class">
-      <UniqueIdentifier>{4dda4601-90f3-4b65-9d71-41a1d284ef8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Class\Models">
-      <UniqueIdentifier>{43ae8e53-a04d-4b00-bfe6-d4c4529648cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Class\Effect">
-      <UniqueIdentifier>{9973370a-bfed-4747-a419-9232e424ebdf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Class\Effect\override">
-      <UniqueIdentifier>{8703b573-1868-4aa9-aff5-024eabf478d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Class\Map">
-      <UniqueIdentifier>{b72c4c42-7452-4711-85ef-41e2ccddb736}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Class\Models\Block.h">
-      <Filter>Class\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Class\Effect\EffectManager.h">
-      <Filter>Class\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Class\Effect\IEffect.h">
-      <Filter>Class\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Class\Effect\override\template.h">
-      <Filter>Class\Effect\override</Filter>
-    </ClInclude>
-    <ClInclude Include="Class\Map\Map.h">
-      <Filter>Class\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Class\Map\BlockMass.h">
-      <Filter>Class\Map</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

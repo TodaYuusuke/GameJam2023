@@ -175,6 +175,9 @@
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\GameClear.cpp" />
     <ClCompile Include="scene\GameOver.cpp" />
+    <ClCompile Include="..\Class\Models\Block.cpp">
+      <Filter>Class\Models</Filter>
+    </ClCompile>
     <ClCompile Include="..\Class\Effect\EffectManager.cpp">
       <Filter>Class\Effect</Filter>
     </ClCompile>
@@ -325,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="scene\GameOver.h">
       <Filter>ヘッダー ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Class\Models\Block.h">
+      <Filter>Class\Models</Filter>
     </ClInclude>
     <ClInclude Include="..\Class\Effect\EffectManager.h">
       <Filter>Class\Effect</Filter>
