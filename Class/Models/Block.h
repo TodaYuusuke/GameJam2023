@@ -37,11 +37,14 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	/// <param name="textureNum">textureManagerで作ったenum型の番号</param>
-	void Draw(int textureNum);	// 描画
+	void Draw();	// 描画
 
 public:
 	// SRT
-	Transform transform_;
+	Transform transform;
+
+	// テクスチャナンバー
+	int textureNum;
 
 private: // メンバ変数
 	// Material

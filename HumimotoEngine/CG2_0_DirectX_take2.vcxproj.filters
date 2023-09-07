@@ -196,6 +196,9 @@
     <ClCompile Include="..\Class\Utility\AABB.cpp">
       <Filter>Class\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\Class\Map\MapManager.cpp">
+      <Filter>Class\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl">
@@ -355,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="..\Class\Utility\AABB.h">
       <Filter>Class\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Class\Map\MapManager.h">
+      <Filter>Class\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

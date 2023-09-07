@@ -1,5 +1,7 @@
 #pragma once
 #include "IScene.h"
+#include "../components/camera/DebugCamera.h"
+#include "../../Class/Map/MapManager.h"
 
 class GameManager;
 class GameScene : public IScene
@@ -16,6 +18,10 @@ public:
 
 	void Finalize()override;
 private:
+	// カメラのポインタ
+	DebugCamera* camera_ = nullptr;
 
+	// マップデータ
+	Map* map_ = nullptr;
 };
 

@@ -73,7 +73,7 @@ void Block::Initialize() {
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
 
-	transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	uvTransform_ = {
 		{1.0f,1.0f,1.0f},
 		{0.0f,0.0f,0.0f},
@@ -87,7 +87,7 @@ void Block::Initialize() {
 	materialData_->uvTransform = MakeIdentity4x4();
 }
 
-void Block::Draw(int textureNum) {
+void Block::Draw() {
 	uvTransformMatrix_ = MakeScaleMatrix(uvTransform_.scale);
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeRotateZMatrix(uvTransform_.rotate.z));
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranslateMatrix(uvTransform_.translate));
@@ -95,7 +95,7 @@ void Block::Draw(int textureNum) {
 
 	// �J����
 	//transform_.rotate.y += 0.006f;
-	transformationMatrixData_->World = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
+	transformationMatrixData_->World = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 
 	transformationMatrixData_->WVP = Multiply(transformationMatrixData_->World, *Camera::GetInstance()->GetTransformationMatrixData());
 	transformationMatrixData_->World = MakeIdentity4x4();

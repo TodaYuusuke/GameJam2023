@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "../utility/ConvertString.h"
 #include "../utility/GlobalVariables.h"
+#include "../../Class/Map/MapManager.h"
 
 GameManager::GameManager() {
 	 // 各シーンの配列
@@ -62,8 +63,13 @@ void GameManager::Initialize() {
 	// ブローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
 
+	// マップマネージャーの初期化
+	MapManager* mapManager = MapManager::GetInstance();
+	mapManager->Initialize();
+	mapManager->SetCurrentMap(0);
+
 	//初期シーンの設定
-	sceneNum_ = TITLE_SCENE;
+	sceneNum_ = GAME_SCENE;
 	// シーンごとの初期化
 	sceneArr_[sceneNum_]->Initialize();
 }

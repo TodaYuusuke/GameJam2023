@@ -10,6 +10,7 @@ void TitleScene::Initialize() {
 	input_ = Input::GetInstance();
 	block_ = new Block();
 	block_->Initialize();
+	block_->textureNum = BLOCK;
 	pos_ = { 0,0,30 };
 }
 
@@ -18,7 +19,7 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw() {
-	block_->Draw(pos_, {1,1,1},{0,0,0},BLOCK);
+	block_->Draw();
 }
 
 void TitleScene::Finalize() {
