@@ -3,6 +3,8 @@
 
 void GameScene::Initialize() {
 	camera_ = DebugCamera::GetInstance();
+	camera_->Initialize();
+	camera_->SetRotationCenterPosition();
 
 	sceneNum = GAME_SCENE;
 
@@ -20,7 +22,7 @@ void GameScene::Update() {
 
 
 
-	camera_->Update();
+	//camera_->Update();
 	map_->Update();
 }
 

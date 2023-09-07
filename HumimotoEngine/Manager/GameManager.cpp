@@ -50,7 +50,7 @@ void GameManager::Initialize() {
 
 	// デバッグカメラの初期化
 	debugCamera_ = DebugCamera::GetInstance();
-	debugCamera_->initialize();
+	debugCamera_->Initialize();
 
 	// カメラの初期化
 	camera_ = Camera::GetInstance();
@@ -142,13 +142,15 @@ void GameManager::Finalize() {
 void GameManager::BeginFrame() {
 	input_->Update();
 	myEngine_->BeginFrame();
+
+	// ImGui
+	imGuiManager_->PreDraw();
+
 	// デバッグカメラ
 	debugCamera_->Update();
 	// カメラの設定
 	camera_->SettingCamera();
 
-	// ImGui
-	imGuiManager_->PreDraw();
 	// グローバル変数の更新
 	GlobalVariables::GetInstance()->Update();
 }

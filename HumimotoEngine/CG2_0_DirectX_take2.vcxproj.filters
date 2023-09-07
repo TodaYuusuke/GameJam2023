@@ -49,9 +49,6 @@
     <Filter Include="ヘッダー ファイル\utility">
       <UniqueIdentifier>{89962479-26d1-4ba5-9ba9-89faace88398}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\object">
-      <UniqueIdentifier>{0f96bbf9-79cb-4d38-af95-694987399c02}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\components">
       <UniqueIdentifier>{a9e3be61-5c86-4143-85c9-979a85523365}</UniqueIdentifier>
     </Filter>
@@ -87,6 +84,9 @@
     </Filter>
     <Filter Include="Class\Utility">
       <UniqueIdentifier>{d5639860-32df-4cff-9e15-e882d58daabf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\object">
+      <UniqueIdentifier>{0f96bbf9-79cb-4d38-af95-694987399c02}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

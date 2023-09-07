@@ -124,9 +124,9 @@ void Map::AddGroundBlock() {
 }
 
 Vector3 Map::GetMapCenterPosition() {
-	Vector3 centerPos = GetWorldPosition(GetXSize(), GetYSize(), GetZSize());
+	Vector3 centerPos = GetWorldPosition((int)GetXSize(), (int)GetYSize(), (int)GetZSize());
 	centerPos.x /= 2.0f;
-	centerPos.y /= 2.0f;
+	centerPos.y = 0.0f;
 	centerPos.z /= 2.0f;
 	return centerPos;
 }
