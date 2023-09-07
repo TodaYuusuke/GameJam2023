@@ -27,14 +27,19 @@ public: // メンバ関数
 	// 指定した座標のマップIDをゲットする
 	BlockTypeID GetMapChip(Vector3 position) { return mapChip_[(int)position.x][(int)position.y][(int)position.z]; }
 
+	// 描画用のブロックを追加
+	void AddBlock() { blocks_.push_back(new Block()); }
+
 private: // メンバ定数
 	const static int kMapChipMaxSize_ = 16;	// マップの最大サイズ
 
 private: // メンバ変数
 	
-	// マップチップ
-	BlockTypeID mapChip_[kMapChipMaxSize_][kMapChipMaxSize_][kMapChipMaxSize_];
+	// 実際のマップサイズ
+	std::vector<std::vector<std::vector<BlockTypeID>>> mapChip_;
 
+	// マップチップ
+	//BlockTypeID mapChip_[kMapChipMaxSize_][kMapChipMaxSize_][kMapChipMaxSize_];
 	// 描画用のブロックのデータ
-	std::vector<Block> blocks;
+	std::vector<Block*> blocks_;
 };

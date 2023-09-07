@@ -85,6 +85,9 @@
     <Filter Include="Class\Models">
       <UniqueIdentifier>{9243ecbe-a632-4793-969e-4f6a4e0d5dd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Class\Utility">
+      <UniqueIdentifier>{d5639860-32df-4cff-9e15-e882d58daabf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\ImGui\imgui.cpp">
@@ -189,6 +192,9 @@
     </ClCompile>
     <ClCompile Include="..\Class\Models\Block.cpp">
       <Filter>Class\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Class\Utility\AABB.cpp">
+      <Filter>Class\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -346,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="..\Class\Models\Block.h">
       <Filter>Class\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Class\Utility\AABB.h">
+      <Filter>Class\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

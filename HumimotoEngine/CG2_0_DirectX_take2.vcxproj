@@ -100,6 +100,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="..\Class\Effect\override\template.cpp" />
     <ClCompile Include="..\Class\Map\Map.cpp" />
     <ClCompile Include="..\Class\Models\Block.cpp" />
+    <ClCompile Include="..\Class\Utility\AABB.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="components\Audio.cpp" />
@@ -153,6 +154,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="..\Class\Effect\override\template.h" />
     <ClInclude Include="..\Class\Map\Map.h" />
     <ClInclude Include="..\Class\Models\Block.h" />
+    <ClInclude Include="..\Class\Utility\AABB.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="components\Audio.h" />
