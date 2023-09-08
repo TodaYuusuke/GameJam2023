@@ -15,11 +15,13 @@ void GameScene::Update() {
 	// ホットリロード
 	if (Input::GetInstance()->TriggerKey(DIK_R)) {
 		MapManager::GetInstance()->Initialize();
-		MapManager::GetInstance()->SetCurrentMap(0);
+		MapManager::GetInstance()->SetCurrentMap(loadStageNum_);
 		Initialize();
 	}
 
-
+	ImGui::Begin("GameScene Debug");
+	ImGui::SliderInt("loadStageLevel", &loadStageNum_, 0, 7);
+	ImGui::End();
 
 
 	//camera_->Update();

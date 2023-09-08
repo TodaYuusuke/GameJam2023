@@ -15,7 +15,12 @@ public:
 
 	Matrix4x4 GetViewMatrix() { return viewMatrix_; }
 
-private:
+private: // メンバ定数
+	const float kCameraTurnSpeed = 0.07f;
+	const float kCameraZoomSpeed = 0.5f;
+
+
+private: // メンバ変数
 	// 回転中心座標
 	Vector3 rotationCenterPosition_;
 	// 回転のオフセット
@@ -36,5 +41,11 @@ private:
 	Matrix4x4 viewMatrix_;
 	// 射影行列
 	Matrix4x4 orthographicMatrix_;
+
+private: // プライベートな関数
+	// コントローラーでの操作
+	void InputController();
+	// キーボードでの操作
+	void InputKeyboard();
 };
 

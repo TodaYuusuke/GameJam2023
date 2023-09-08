@@ -23,5 +23,8 @@ private:
 
 	// マップデータ
 	Map* map_ = nullptr;
+	
+	// デバッグ用の変数
+	int loadStageNum_ = 0;	// 読み込むステージの番号
 };
 
