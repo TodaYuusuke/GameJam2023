@@ -132,6 +132,10 @@ void MyEngine::CreateRootParameter() {
 	rootParameters_[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
 	rootParameters_[1].Descriptor.ShaderRegister = 0;
 
+	rootParameters_[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParameters_[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
+	rootParameters_[4].Descriptor.ShaderRegister = 1;
+
 	CraeteDescriptorTable();
 
 	rootParameters_[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;

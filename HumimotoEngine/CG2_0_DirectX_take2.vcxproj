@@ -102,7 +102,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="..\Class\Map\Map.cpp" />
     <ClCompile Include="..\Class\Models\Block.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
+    <ClCompile Include="base\ViewProjection.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
+    <ClCompile Include="base\WorldTransform.cpp" />
     <ClCompile Include="components\Audio.cpp" />
     <ClCompile Include="components\camera\Camera.cpp" />
     <ClCompile Include="components\camera\DebugCamera.cpp" />
@@ -123,6 +125,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\ImGui\imgui_tables.cpp" />
     <ClCompile Include="externals\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="MaterialData.cpp" />
+    <ClCompile Include="object\Cube.cpp" />
     <ClCompile Include="object\Sphere.cpp" />
     <ClCompile Include="object\Sprite.cpp" />
     <ClCompile Include="object\Triangle.cpp" />
@@ -156,7 +159,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="..\Class\Map\Map.h" />
     <ClInclude Include="..\Class\Models\Block.h" />
     <ClInclude Include="base\DirectXCommon.h" />
+    <ClInclude Include="base\ViewProjection.h" />
     <ClInclude Include="base\WinApp.h" />
+    <ClInclude Include="base\WorldTransform.h" />
     <ClInclude Include="components\Audio.h" />
     <ClInclude Include="components\camera\Camera.h" />
     <ClInclude Include="components\camera\DebugCamera.h" />
@@ -184,6 +189,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialData.h" />
     <ClInclude Include="ModelData.h" />
+    <ClInclude Include="object\Cube.h" />
     <ClInclude Include="object\Sphere.h" />
     <ClInclude Include="object\Sprite.h" />
     <ClInclude Include="object\Triangle.h" />

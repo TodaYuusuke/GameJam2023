@@ -56,24 +56,9 @@ void Triangle::Initialize() {
 	materialData_->uvTransform = MakeIdentity4x4();
 
 	materialData_->enableLighting = false;
-
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	const char* groupName = "Triangle";
-	GlobalVariables::GetInstance()->CreateGroup(groupName);
-	globalVariables->AddItem(groupName, "translation", transform_.translate);
-	globalVariables->AddItem(groupName, "scale", transform_.scale);
-	globalVariables->AddItem(groupName, "rotate", transform_.rotate);
-	globalVariables->AddItem(groupName, "Color", materialData_->color);
 }
 
 void Triangle::Draw() {
-	ApplyGlobalVariables();
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	// ボタンを押したらsave
-	if (globalVariables->GetInstance()->GetIsSave()) {
-		globalVariables->SaveFile("Triangle");
-	}
-
 	uvTransformMatrix_ = MakeScaleMatrix(uvTransform_.scale);
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeRotateZMatrix(uvTransform_.rotate.z));
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranslateMatrix(uvTransform_.translate));
@@ -98,19 +83,11 @@ void Triangle::Draw() {
 }
 
 void Triangle::ApplyGlobalVariables() {
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	const char* groupName = "Triangle";
-	transform_.translate = globalVariables->GetVector3Value(groupName, "translation");
-	transform_.scale = globalVariables->GetVector3Value(groupName, "scale");
-	transform_.rotate = globalVariables->GetVector3Value(groupName, "rotate");
-	materialData_->color = globalVariables->GetVector4Value(groupName, "Color");
+
 }
 
 void Triangle::ImGuiAdjustParameter() {
-	//ImGui::SliderFloat3("Translation", &transform_.translate.x, -5.0f, 5.0f);
-	ImGui::SliderFloat3("Scale", &transform_.scale.x, -5.0f, 5.0f);
-	ImGui::SliderFloat3("Rotate", &transform_.rotate.x, -6.28f, 6.28f);
-	ImGui::ColorEdit3("color", &materialData_->color.x);
+
 }
 
 const Microsoft::WRL::ComPtr<ID3D12Resource> Triangle::CreateBufferResource(size_t sizeInBytes) {

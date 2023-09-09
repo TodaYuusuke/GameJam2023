@@ -15,6 +15,8 @@
 #include "../../HumimotoEngine/MaterialData.h"
 #include "../../HumimotoEngine/Manager/TextureManager.h"
 #include "../../HumimotoEngine/base/DirectXCommon.h"
+#include "../../HumimotoEngine/base/WorldTransform.h"
+#include "../../HumimotoEngine/base/ViewProjection.h"
 
 class Block {
 public: // メンバ関数
@@ -40,7 +42,7 @@ public: // メンバ関数
 	/// <param name="scele">大きさ</param>
 	/// <param name="rotate">回転</param>
 	/// <param name="textureNum">textureManagerで作ったenum型の番号</param>
-	void Draw(Vector3 translate, Vector3 scele, Vector3 rotate, int textureNum);	// 描画
+	void Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, int textureNum);	// 描画
 
 public:
 	// SRT

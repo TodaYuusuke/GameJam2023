@@ -65,8 +65,6 @@ void Block::Initialize() {
 
 	CreateMaterialResource();
 
-	CreateWvpResource();
-
 	CreateVertexBufferView();
 
 	// �������ނ��߂̃A�h���X��擾
@@ -80,6 +78,8 @@ void Block::Initialize() {
 		{0.0f,0.0f,0.0f}
 	};
 
+	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
+
 	// Lighting���邩
 	materialData_->enableLighting = false;
 
@@ -87,34 +87,23 @@ void Block::Initialize() {
 	materialData_->uvTransform = MakeIdentity4x4();
 }
 
-void Block::Draw(Vector3 translate, Vector3 scele, Vector3 rotate, int textureNum) {
-	transform_.translate = translate;
-	transform_.scale = scele;
-	transform_.rotate = rotate;
+void Block::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, int textureNum) {
 
 	uvTransformMatrix_ = MakeScaleMatrix(uvTransform_.scale);
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeRotateZMatrix(uvTransform_.rotate.z));
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranslateMatrix(uvTransform_.translate));
 	materialData_->uvTransform = uvTransformMatrix_;
 
-	// �J����
-	//transform_.rotate.y += 0.006f;
-	transformationMatrixData_->World = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
-
-	transformationMatrixData_->WVP = Multiply(transformationMatrixData_->World, *Camera::GetInstance()->GetTransformationMatrixData());
-	transformationMatrixData_->World = MakeIdentity4x4();
-
-	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
-
 	// �R�}���h��ς�
 	DirectXCommon::GetInstance()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBV��ݒ�
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff_->GetGPUVirtualAddress());
+
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(4, viewProjection.constBuff_->GetGPUVirtualAddress());
+
 	// �`���ݒ�BPSO�ɐݒ肵�Ă����̂Ƃ͂܂��ʁB������̂�ݒ肷��ƍl���Ă����Ηǂ�
 	DirectXCommon::GetInstance()->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// DescriptorTable�̐ݒ�
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetTextureSrvHandleGPU()[textureNum]);
-
-	// wvp��CBuffer�̏ꏊ��ݒ�
-	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResource_.Get()->GetGPUVirtualAddress());
 
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(3, Light::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
 

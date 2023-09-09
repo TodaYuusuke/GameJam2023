@@ -190,6 +190,15 @@
     <ClCompile Include="..\Class\Map\Map.cpp">
       <Filter>Class\Map</Filter>
     </ClCompile>
+    <ClCompile Include="base\WorldTransform.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\ViewProjection.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="object\Cube.cpp">
+      <Filter>ソース ファイル\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl">
@@ -346,6 +355,15 @@
     </ClInclude>
     <ClInclude Include="..\Class\Map\Map.h">
       <Filter>Class\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="base\WorldTransform.h">
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\ViewProjection.h">
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="object\Cube.h">
+      <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
