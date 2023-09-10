@@ -34,6 +34,9 @@ void Map::Initialize() {
 	// スケールを調整
 }
 void Map::Update() {
+	// ブロック消滅処理
+	CheckClearBlock();
+
 	ImGui::Begin("MapChip");
 	for (int y = 0; y < GetYSize(); y++) {
 		for (int z = 0; z < GetZSize(); z++) {
@@ -48,7 +51,6 @@ void Map::Update() {
 	if (player_ == nullptr) {
 		return;
 	}
-
 
 	// 移動クールタイム
 	if (blockMoveCoolTime > 0) {
@@ -283,6 +285,8 @@ bool Map::GrabBlock(Player* player) {
 	mapChip_[(int)playerPos.x][(int)playerPos.y][(int)playerPos.z].type = BlockTypeID::Player;
 	// プレイヤーのポインタをセット
 	player_ = player;
+	// プレイヤーのつかんだブロックのポインタ
+	grabPosition_ = grabPos;
 	// プレイヤーのつかんだブロックID
 	grabbedBlockID = (int)mapChip_[(int)grabPos.x][(int)grabPos.y][(int)grabPos.z].type;
 
@@ -337,7 +341,6 @@ bool Map::MoveOnMapChip(Vector3 destination) {
 			}
 		}
 	}
-
 	// 次につかんでいるブロック全部の座標を取得
 	for (int x = 0; x < GetXSize(); x++) {
 		for (int y = 0; y < GetYSize(); y++) {
@@ -353,8 +356,6 @@ bool Map::MoveOnMapChip(Vector3 destination) {
 					if (GetMapChip(nextPos) == BlockTypeID::Air || GetMapChip(nextPos) == BlockTypeID::Player || (int)GetMapChip(nextPos) == grabbedBlockID) {
 						newMapChip[(int)nextPos.x][(int)nextPos.y][(int)nextPos.z].type = mapChip_[x][y][z].type;
 						newMapChip[(int)nextPos.x][(int)nextPos.y][(int)nextPos.z].blockPtr = mapChip_[x][y][z].blockPtr;
-						// ブロックの座標修正
-						//newMapChip[(int)nextPos.x][(int)nextPos.y][(int)nextPos.z].blockPtr->transform.translate = GetWorldPosition((int)nextPos.x, (int)nextPos.y, (int)nextPos.z);
 					}
 					else {
 						return false;
@@ -369,6 +370,8 @@ bool Map::MoveOnMapChip(Vector3 destination) {
 	newMapChip[(int)newPlayerMapChipPosition.x][(int)newPlayerMapChipPosition.y][(int)newPlayerMapChipPosition.z].type = BlockTypeID::Player;
 	newMapChip[(int)newPlayerMapChipPosition.x][(int)newPlayerMapChipPosition.y][(int)newPlayerMapChipPosition.z].blockPtr = nullptr;
 	player_->transform.translate = GetWorldPosition((int)newPlayerMapChipPosition.x, (int)newPlayerMapChipPosition.y, (int)newPlayerMapChipPosition.z);
+	// つかんでいるブロックの位置も修正
+	grabPosition_ += destination;
 	// ブロックの位置を修正
 	for (int x = 0; x < GetXSize(); x++) {
 		for (int y = 0; y < GetYSize(); y++) {
@@ -382,4 +385,118 @@ bool Map::MoveOnMapChip(Vector3 destination) {
 	// マップチップを更新
 	mapChip_ = newMapChip;
 	return true;
+}
+
+void Map::CheckClearBlock() {
+	// 5個以上並ぶブロックの集まりを調べる
+	const int minSequenceLength = 5; // 5個以上の連続を検出するための最小長
+
+	// サイズ
+	int sizeX = (int)GetXSize();
+	int sizeY = (int)GetYSize();
+	int sizeZ = (int)GetZSize();
+
+	// 最終的に消滅する全ブロックの座標
+	std::vector<Vector3> deleteBlocks;
+
+	// X軸方向の検出
+	for (int x = 0; x < sizeX; x++) {
+		for (int y = 0; y < sizeY; y++) {
+			for (int z = 0; z < sizeZ; z++) {
+				if (mapChip_[x][y][z].blockPtr == nullptr)
+					continue;
+				int consecutiveCount = 1;
+
+				// 右方向に検出
+				for (int i = x + 1; i < sizeX; i++) {
+					if (mapChip_[i][y][z].blockPtr != nullptr) {
+						consecutiveCount++;
+					}
+					else {
+						break;
+					}
+				}
+
+				// 5個以上並んでいるかチェック
+				if (consecutiveCount >= minSequenceLength) {
+					// 並んでいる座標全てをvectorに追加
+					for (int i = 0; i < consecutiveCount; i++) {
+						deleteBlocks.push_back(Vector3{static_cast<float>(x + i),static_cast<float>(y),static_cast<float>(z) });
+					}
+				}
+			}
+		}
+	}
+
+	// Y軸方向の検出（X軸と同様の方法で）
+	for (int y = 0; y < sizeY; y++) {
+		for (int x = 0; x < sizeX; x++) {
+			for (int z = 0; z < sizeZ; z++) {
+				if (mapChip_[x][y][z].blockPtr == nullptr)
+					continue;
+				int consecutiveCount = 1;
+
+				// 上方向に検出
+				for (int j = y + 1; j < sizeY; j++) {
+					if (mapChip_[x][j][z].blockPtr != nullptr) {
+						consecutiveCount++;
+					}
+					else {
+						break;
+					}
+				}
+
+				// 5個以上並んでいるかチェック
+				if (consecutiveCount >= minSequenceLength) {
+					// 並んでいる座標全てをvectorに追加
+					for (int i = 0; i < consecutiveCount; i++) {
+						deleteBlocks.push_back(Vector3{ static_cast<float>(x),static_cast<float>(y + i),static_cast<float>(z) });
+					}
+				}
+			}
+		}
+	}
+
+	// Z軸方向の検出（X軸と同様の方法で）
+	for (int z = 0; z < sizeZ; z++) {
+		for (int x = 0; x < sizeX; x++) {
+			for (int y = 0; y < sizeY; y++) {
+				if (mapChip_[x][y][z].blockPtr == nullptr)
+					continue;
+				int consecutiveCount = 1;
+
+				// 前方向に検出
+				for (int k = z + 1; k < sizeZ; k++) {
+					if (mapChip_[x][y][k].blockPtr != nullptr) {
+						consecutiveCount++;
+					}
+					else {
+						break;
+					}
+				}
+
+				// 5個以上並んでいるかチェック
+				if (consecutiveCount >= minSequenceLength) {
+					// 並んでいる座標全てをvectorに追加
+					for (int i = 0; i < consecutiveCount; i++) {
+						deleteBlocks.push_back(Vector3{ static_cast<float>(x),static_cast<float>(y),static_cast<float>(z + i) });
+					}
+				}
+			}
+		}
+	}
+
+	// 全ブロック削除
+	for (Vector3 vector : deleteBlocks) {
+		mapChip_[(int)vector.x][(int)vector.y][(int)vector.z].type = BlockTypeID::Air;
+		delete mapChip_[(int)vector.x][(int)vector.y][(int)vector.z].blockPtr;
+		mapChip_[(int)vector.x][(int)vector.y][(int)vector.z].blockPtr = nullptr;
+	}
+
+	// もしつかんでいるブロックが消えたならつかみ解除
+	if(player_ != nullptr){
+		if (mapChip_[(int)grabPosition_.x][(int)grabPosition_.y][(int)grabPosition_.z].blockPtr == nullptr) {
+			player_->ReleaseGrab();
+		}
+	}
 }

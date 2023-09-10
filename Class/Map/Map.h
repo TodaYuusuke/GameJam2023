@@ -83,6 +83,8 @@ private: // メンバ変数
 
 	// プレイヤーのポインタ
 	Player* player_ = nullptr;
+	// プレイヤーのつかんだブロックの座標
+	Vector3 grabPosition_;
 	// プレイヤーのつかんだブロックID
 	int grabbedBlockID = -1;
 	// ブロックを動かすクールタイム
@@ -101,4 +103,6 @@ private: // プライベートな関数
 
 	// マップチップ上での移動処理
 	bool MoveOnMapChip(Vector3 destination);
+	// マップチップ上での消滅処理
+	void CheckClearBlock();
 };

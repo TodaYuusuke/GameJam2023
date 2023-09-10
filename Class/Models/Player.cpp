@@ -66,16 +66,13 @@ void Player::Update() {
 				isGrabbing = true;
 			}
 			else if (isGrabbing){
-				MapManager::GetInstance()->GetCurrentMap()->ReleaseBlock();
-				isGrabbing = false;
+				ReleaseGrab();
 			}
 		}
-
 
 		// トリガー用のbool
 		preLT = joyState.Gamepad.bLeftTrigger & XINPUT_GAMEPAD_LEFT_TRIGGER;
 		preRT = joyState.Gamepad.bRightTrigger & XINPUT_GAMEPAD_RIGHT_TRIGGER;
-		
 	}
 
 	// 当たり判定をチェック
@@ -94,8 +91,10 @@ void Player::Draw() {
 	BaseDraw();
 }
 
-
-
+void Player::ReleaseGrab(){
+	MapManager::GetInstance()->GetCurrentMap()->ReleaseBlock();
+	isGrabbing = false;
+}
 
 
 void Player::BaseInitialize() {

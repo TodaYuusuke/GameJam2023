@@ -26,6 +26,9 @@ public: // メンバ関数
 	void Update();	// 更新
 	void Draw();	// 描画
 
+	// つかみを無理やり解除
+	void ReleaseGrab();
+
 private: // メンバ定数
 	// プレイヤーの移動速度
 	const float kPlayerMovementSpeed = 0.2f;
