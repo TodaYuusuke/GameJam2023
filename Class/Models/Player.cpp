@@ -4,6 +4,10 @@
 #include "../../HumimotoEngine/components/camera/DebugCamera.h"
 #include "../Utility/MyUtility.h"
 
+// トリガーボタン (LT および RT)
+#define XINPUT_GAMEPAD_LEFT_TRIGGER    0x00FF
+#define XINPUT_GAMEPAD_RIGHT_TRIGGER   0xFF00
+
 void Player::Initialize() {
 	BaseInitialize();
 }
@@ -12,43 +16,66 @@ void Player::Update() {
 
 	// ゲームパッド状態取得
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-		// デッドゾーンの設定
-		SHORT leftThumbX = Input::GetInstance()->ApplyDeadzone(joyState.Gamepad.sThumbLX);
-		SHORT leftThumbY = Input::GetInstance()->ApplyDeadzone(joyState.Gamepad.sThumbLY);
+		// ブロックをつかんでいない間の移動処理
+		if (!isGrabbing) {
+			// デッドゾーンの設定
+			SHORT leftThumbX = Input::GetInstance()->ApplyDeadzone(joyState.Gamepad.sThumbLX);
+			SHORT leftThumbY = Input::GetInstance()->ApplyDeadzone(joyState.Gamepad.sThumbLY);
 
-		// プレイヤー移動
-		Vector3 move = {
-			(float)leftThumbX / SHRT_MAX,
-			0.0f,
-			(float)leftThumbY / SHRT_MAX };
-		Vector3 rotation = DebugCamera::GetInstance()->GetCameraRotation();
-		rotation.x = 0.0f;	// X軸は捨てる
-		move = move * MakeRotateMatrix(rotation);
-		move.y = 0.0f;	// Y軸は捨てる
-		transform.translate += move * kPlayerMovementSpeed;
+			// プレイヤー移動
+			Vector3 move = {
+				(float)leftThumbX / SHRT_MAX,
+				0.0f,
+				(float)leftThumbY / SHRT_MAX
+			};
 
-		// キャラクターの向きを決定する
-		if (Length(move) > 0.0f) {
-			// 目的の角度
-			Vector3 goalRotation = { 0.0f, 0.0f, 0.0f };
-			// Y軸周りの角度
-			goalRotation.y = std::atan2f(move.x, move.z);
-			// X軸周りの角度
-			goalRotation.x = std::atan2f(-move.y, Length({ move.x, 0, move.z }));
+			Vector3 rotation = DebugCamera::GetInstance()->GetCameraRotation();
+			rotation.x = 0.0f;	// X軸は捨てる
+			move = move * MakeRotateMatrix(rotation);
+			move.y = 0.0f;	// Y軸は捨てる
+			transform.translate += move * kPlayerMovementSpeed;
 
-			// 現在の角度と目標の角度を比較し、逆回転の場合に調整
-			if (std::abs(transform.rotate.y - goalRotation.y) > M_PI) {
-				if (transform.rotate.y > goalRotation.y) {
-					transform.rotate.y -= static_cast<float>(2.0f * M_PI);
+			// キャラクターの向きを決定する
+			if (Length(move) > 0.0f) {
+				// 目的の角度
+				Vector3 goalRotation = { 0.0f, 0.0f, 0.0f };
+				// Y軸周りの角度
+				goalRotation.y = std::atan2f(move.x, move.z);
+				// X軸周りの角度
+				goalRotation.x = std::atan2f(-move.y, Length({ move.x, 0, move.z }));
+
+				// 現在の角度と目標の角度を比較し、逆回転の場合に調整
+				if (std::abs(transform.rotate.y - goalRotation.y) > M_PI) {
+					if (transform.rotate.y > goalRotation.y) {
+						transform.rotate.y -= static_cast<float>(2.0f * M_PI);
+					}
+					else {
+						transform.rotate.y += static_cast<float>(2.0f * M_PI);
+					}
 				}
-				else {
-					transform.rotate.y += static_cast<float>(2.0f * M_PI);
-				}
+
+				// 角度を適応
+				transform.rotate = Utility::Slerp(transform.rotate, goalRotation, 0.2f);
 			}
-
-			// 角度を適応
-			transform.rotate = Utility::Slerp(transform.rotate, goalRotation, 0.2f);
 		}
+
+		// ブロックをつかめるかチェック
+		// LT or RTトリガーを押していたら >>> ブロックをつかむ
+		if ((!preLT && joyState.Gamepad.bLeftTrigger & XINPUT_GAMEPAD_LEFT_TRIGGER) || (!preRT && joyState.Gamepad.bRightTrigger & XINPUT_GAMEPAD_RIGHT_TRIGGER)) {
+			if (!isGrabbing && MapManager::GetInstance()->GetCurrentMap()->GrabBlock(this)) {
+				isGrabbing = true;
+			}
+			else if (isGrabbing){
+				MapManager::GetInstance()->GetCurrentMap()->ReleaseBlock();
+				isGrabbing = false;
+			}
+		}
+
+
+		// トリガー用のbool
+		preLT = joyState.Gamepad.bLeftTrigger & XINPUT_GAMEPAD_LEFT_TRIGGER;
+		preRT = joyState.Gamepad.bRightTrigger & XINPUT_GAMEPAD_RIGHT_TRIGGER;
+		
 	}
 
 	// 当たり判定をチェック
@@ -60,6 +87,7 @@ void Player::Update() {
 
 	ImGui::Begin("Player");
 	ImGui::DragFloat3("translate", &transform.translate.x);
+	ImGui::DragFloat3("rotation", &transform.rotate.x);
 	ImGui::End();
 }
 void Player::Draw() {

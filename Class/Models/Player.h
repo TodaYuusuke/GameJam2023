@@ -16,6 +16,8 @@
 #include "../../HumimotoEngine/Manager/TextureManager.h"
 #include "../../HumimotoEngine/base/DirectXCommon.h"
 
+class Block;
+
 class Player {
 public: // メンバ関数
 	ModelData GetModelData() { return modelData_; }
@@ -36,6 +38,18 @@ public:
 	// テクスチャナンバー
 	int textureNum;
 
+	// 移動の目標座標（ブロックつかみ中）
+	Vector3 goalPosition;
+
+private:
+	// トリガー用の変数
+	bool preLT = false;
+	bool preRT = false;
+	// ブロックのポインタ
+	Block* blockPtr_ = nullptr;
+
+	// ブロックつかみ中
+	bool isGrabbing = false;
 
 private: // プライベートな変数と関数
 	// Material
