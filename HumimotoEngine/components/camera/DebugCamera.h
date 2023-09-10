@@ -11,8 +11,11 @@ public:
 
 	void Update();
 
+	// カメラの回転中心座標をセットする関数
 	void SetRotationCenterPosition();
-
+	// カメラの回転角を求める関数
+	Vector3 GetCameraRotation() { return rotation_; }
+	
 	Matrix4x4 GetViewMatrix() { return viewMatrix_; }
 
 private: // メンバ定数

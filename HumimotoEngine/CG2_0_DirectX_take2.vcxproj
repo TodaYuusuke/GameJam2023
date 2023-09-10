@@ -101,6 +101,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="..\Class\Map\Map.cpp" />
     <ClCompile Include="..\Class\Map\MapManager.cpp" />
     <ClCompile Include="..\Class\Models\Block.cpp" />
+    <ClCompile Include="..\Class\Models\Player.cpp" />
     <ClCompile Include="..\Class\Utility\AABB.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
@@ -124,6 +125,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\ImGui\imgui_tables.cpp" />
     <ClCompile Include="externals\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="MaterialData.cpp" />
+    <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="object\Sphere.cpp" />
     <ClCompile Include="object\Sprite.cpp" />
     <ClCompile Include="object\Triangle.cpp" />
@@ -156,7 +158,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="..\Class\Map\Map.h" />
     <ClInclude Include="..\Class\Map\MapManager.h" />
     <ClInclude Include="..\Class\Models\Block.h" />
+    <ClInclude Include="..\Class\Models\Player.h" />
     <ClInclude Include="..\Class\Utility\AABB.h" />
+    <ClInclude Include="..\Class\Utility\MyUtility.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="components\Audio.h" />

@@ -24,24 +24,24 @@ using ScopedAlignedArrayFloat = std::unique_ptr<float[], aligned_deleter>;
 
 inline ScopedAlignedArrayFloat make_AlignedArrayFloat(uint64_t count)
 {
-    uint64_t size = sizeof(float) * count;
-    size = (size + 15u) & ~0xF;
-    if (size > static_cast<uint64_t>(UINT32_MAX))
-        return nullptr;
+	uint64_t size = sizeof(float) * count;
+	size = (size + 15u) & ~0xF;
+	if (size > static_cast<uint64_t>(UINT32_MAX))
+		return nullptr;
 
-    auto ptr = aligned_alloc(16, static_cast<size_t>(size));
-    return ScopedAlignedArrayFloat(static_cast<float*>(ptr));
+	auto ptr = aligned_alloc(16, static_cast<size_t>(size));
+	return ScopedAlignedArrayFloat(static_cast<float*>(ptr));
 }
 
 using ScopedAlignedArrayXMVECTOR = std::unique_ptr<DirectX::XMVECTOR[], aligned_deleter>;
 
 inline ScopedAlignedArrayXMVECTOR make_AlignedArrayXMVECTOR(uint64_t count)
 {
-    uint64_t size = sizeof(DirectX::XMVECTOR) * count;
-    if (size > static_cast<uint64_t>(UINT32_MAX))
-        return nullptr;
-    auto ptr = aligned_alloc(16, static_cast<size_t>(size));
-    return ScopedAlignedArrayXMVECTOR(static_cast<DirectX::XMVECTOR*>(ptr));
+	uint64_t size = sizeof(DirectX::XMVECTOR) * count;
+	if (size > static_cast<uint64_t>(UINT32_MAX))
+		return nullptr;
+	auto ptr = aligned_alloc(16, static_cast<size_t>(size));
+	return ScopedAlignedArrayXMVECTOR(static_cast<DirectX::XMVECTOR*>(ptr));
 }
 
 #else // WIN32
@@ -54,22 +54,22 @@ using ScopedAlignedArrayFloat = std::unique_ptr<float[], aligned_deleter>;
 
 inline ScopedAlignedArrayFloat make_AlignedArrayFloat(uint64_t count)
 {
-    const uint64_t size = sizeof(float) * count;
-    if (size > static_cast<uint64_t>(UINT32_MAX))
-        return nullptr;
-    auto ptr = _aligned_malloc(static_cast<size_t>(size), 16);
-    return ScopedAlignedArrayFloat(static_cast<float*>(ptr));
+	const uint64_t size = sizeof(float) * count;
+	if (size > static_cast<uint64_t>(UINT32_MAX))
+		return nullptr;
+	auto ptr = _aligned_malloc(static_cast<size_t>(size), 16);
+	return ScopedAlignedArrayFloat(static_cast<float*>(ptr));
 }
 
 using ScopedAlignedArrayXMVECTOR = std::unique_ptr<DirectX::XMVECTOR[], aligned_deleter>;
 
 inline ScopedAlignedArrayXMVECTOR make_AlignedArrayXMVECTOR(uint64_t count)
 {
-    const uint64_t size = sizeof(DirectX::XMVECTOR) * count;
-    if (size > static_cast<uint64_t>(UINT32_MAX))
-        return nullptr;
-    auto ptr = _aligned_malloc(static_cast<size_t>(size), 16);
-    return ScopedAlignedArrayXMVECTOR(static_cast<DirectX::XMVECTOR*>(ptr));
+	const uint64_t size = sizeof(DirectX::XMVECTOR) * count;
+	if (size > static_cast<uint64_t>(UINT32_MAX))
+		return nullptr;
+	auto ptr = _aligned_malloc(static_cast<size_t>(size), 16);
+	return ScopedAlignedArrayXMVECTOR(static_cast<DirectX::XMVECTOR*>(ptr));
 }
 
 //---------------------------------------------------------------------------------
@@ -88,25 +88,25 @@ using ScopedFindHandle = std::unique_ptr<void, find_closer>;
 class auto_delete_file
 {
 public:
-    auto_delete_file(HANDLE hFile) noexcept : m_handle(hFile) {}
+	auto_delete_file(HANDLE hFile) noexcept : m_handle(hFile) {}
 
-    auto_delete_file(const auto_delete_file&) = delete;
-    auto_delete_file& operator=(const auto_delete_file&) = delete;
+	auto_delete_file(const auto_delete_file&) = delete;
+	auto_delete_file& operator=(const auto_delete_file&) = delete;
 
-    ~auto_delete_file()
-    {
-        if (m_handle)
-        {
-            FILE_DISPOSITION_INFO info = {};
-            info.DeleteFile = TRUE;
-            std::ignore = SetFileInformationByHandle(m_handle, FileDispositionInfo, &info, sizeof(info));
-        }
-    }
+	~auto_delete_file()
+	{
+		if (m_handle)
+		{
+			FILE_DISPOSITION_INFO info = {};
+			info.DeleteFile = TRUE;
+			std::ignore = SetFileInformationByHandle(m_handle, FileDispositionInfo, &info, sizeof(info));
+		}
+	}
 
-    void clear() noexcept { m_handle = nullptr; }
+	void clear() noexcept { m_handle = nullptr; }
 
 private:
-    HANDLE m_handle;
+	HANDLE m_handle;
 };
 
 #endif // WIN32

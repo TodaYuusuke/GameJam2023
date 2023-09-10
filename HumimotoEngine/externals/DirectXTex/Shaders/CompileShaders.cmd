@@ -36,10 +36,10 @@ call :CompileShader BC6HEncode EncodeBlockCS
 echo.
 
 if %error% == 0 (
-    echo Shaders compiled ok
+	echo Shaders compiled ok
 ) else (
-    echo There were shader compilation errors!
-    exit /b 1
+	echo There were shader compilation errors!
+	exit /b 1
 )
 
 endlocal

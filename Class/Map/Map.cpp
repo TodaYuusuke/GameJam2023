@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "../../HumimotoEngine/Manager/ImGuiManager.h"
+#include "../Models/Player.h"
 
 void Map::Initialize() {
 	// ブロックをクリア
@@ -131,4 +132,43 @@ Vector3 Map::GetMapCenterPosition() {
 	centerPos.z /= 2.0f;
 	centerPos.z -= kBlockSize_ / 2.0f;
 	return centerPos;
+}
+
+Vector3 Map::IsCollisionVector3(AABB aabb) {
+	// 最終的に返すベクトル
+	Vector3 result = { 0.0f,0.0f,0.0f };
+	float limitX = (GetXSize() * (kBlockSize_ * kBlockScale_)) - 1.0f;
+	float limitZ = (GetZSize() * (kBlockSize_ * kBlockScale_)) - 1.0f;
+
+	// 場外に出ていないかチェック
+	if (aabb.min.x < -1.0f) {
+		result.x -= 1.0f + aabb.min.x;
+	}
+	else if(aabb.max.x > limitX){
+		result.x += limitX - aabb.max.x;
+	}
+	if (aabb.min.z < -1.0f) {
+		result.z -= 1.0f + aabb.min.z;
+	}
+	else if (aabb.max.z > limitX) {
+		result.z += limitX - aabb.max.z;
+	}
+
+
+	// 全ブロックとの当たり判定を取る
+	for (Block* block : blocks_) {
+		// ブロックからAABBを計算する
+		AABB collision;
+		Vector3 blockSize = { (kBlockSize_ / 2.0f) * kBlockScale_ ,(kBlockSize_ / 2.0f) * kBlockScale_ , (kBlockSize_ / 2.0f) * kBlockScale_ };
+		collision.min = block->transform.translate - blockSize;
+		collision.max = block->transform.translate + blockSize;
+		// 当たり判定をチェック
+		Vector3 fixVector = aabb.IsCollisionVector3(collision);
+		// 計算するAABBを修正してから、当たり判定に戻る
+		aabb.min += fixVector;
+		aabb.max += fixVector;
+		result += fixVector;
+	}
+
+	return result;
 }

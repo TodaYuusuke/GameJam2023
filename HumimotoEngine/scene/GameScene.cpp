@@ -9,6 +9,7 @@ void GameScene::Initialize() {
 	sceneNum = GAME_SCENE;
 
 	map_ = MapManager::GetInstance()->GetCurrentMap();
+	player_.Initialize();
 }
 
 void GameScene::Update() {
@@ -25,13 +26,14 @@ void GameScene::Update() {
 
 
 	//camera_->Update();
+	player_.Update();
 	map_->Update();
 }
 
 void GameScene::Draw() {
 	map_->Draw();
+	player_.Draw();
 }
 
 void GameScene::Finalize() {
-
 }

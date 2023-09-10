@@ -1,6 +1,9 @@
 #pragma once
 #include "../../HumimotoEngine/math/Vector3.h"
 #include "../Models/Block.h"
+#include "../Utility/AABB.h"
+
+class Player;
 
 // *** マップID *** //
 // 0 ... 無し（空気）
@@ -49,20 +52,27 @@ public: // メンバ関数
 	// マップの中心座標を受け取る
 	Vector3 GetMapCenterPosition();
 
+	// マップの当たり判定を取る
+	Vector3 IsCollisionVector3(AABB aabb);
+	// ブロックをつかめるか判定を取る
+	
+
 private: // メンバ定数
 	float kBlockSize_ = 2.0f;	// ブロック一つのサイズ
 	float kBlockScale_ = 1.0f;	// ブロックの共通スケール
 
 private: // メンバ変数
-
-	// マップチップ（読み取り専用）
+	
+	// マップチップ
 	std::vector<std::vector<std::vector<BlockTypeID>>> mapChip_;
-
-	// 描画用のブロックのデータ
+	
+	// 地面の描画用ブロックのデータ
 	std::vector<Block*> groundBlocks_;
-	// 描画用のブロックのデータ
+	// ブロックのデータ
 	std::vector<Block*> blocks_;
 
+	// ブロック操作モード切り替え
+	bool isMovingBlockMode = false;
 	// マップのノルマ
 	int quota[3];
 

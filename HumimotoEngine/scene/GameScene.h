@@ -2,6 +2,7 @@
 #include "IScene.h"
 #include "../components/camera/DebugCamera.h"
 #include "../../Class/Map/MapManager.h"
+#include "../../Class/Models/Player.h"
 
 class GameManager;
 class GameScene : public IScene
@@ -23,7 +24,9 @@ private:
 
 	// マップデータ
 	Map* map_ = nullptr;
-	
+	// プレイヤー
+	Player player_;
+
 	// デバッグ用の変数
 	int loadStageNum_ = 0;	// 読み込むステージの番号
 };

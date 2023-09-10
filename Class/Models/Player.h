@@ -16,39 +16,28 @@
 #include "../../HumimotoEngine/Manager/TextureManager.h"
 #include "../../HumimotoEngine/base/DirectXCommon.h"
 
-#include "../Utility/AABB.h"
-
-class Block {
+class Player {
 public: // メンバ関数
 	ModelData GetModelData() { return modelData_; }
 
-	Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(const Microsoft::WRL::ComPtr<ID3D12Device>& device, size_t sizeInBytes);
-
-	void CreateVertexResource();
-
-	void CreateVertexBufferView();
-
-	void CreateMaterialResource();
-
-	void CreateWvpResource();
-
 	void Initialize();	// 初期化
-	//void Update();	// 更新
-	
-	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="textureNum">textureManagerで作ったenum型の番号</param>
+	void Update();	// 更新
 	void Draw();	// 描画
+
+private: // メンバ定数
+	// プレイヤーの移動速度
+	const float kPlayerMovementSpeed = 0.2f;
+	// プレイヤーの当たり判定
+	float kPlayerCollisionSize_ = 1.0f;
 
 public:
 	// SRT
 	Transform transform;
-
 	// テクスチャナンバー
 	int textureNum;
 
-private: // メンバ変数
+
+private: // プライベートな変数と関数
 	// Material
 	Material* materialData_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> materialResource_;
@@ -70,4 +59,13 @@ private: // メンバ変数
 	// ワールドトランスフォーム
 	//WorldTransform worldTransform_;
 
+	// モデル用の処理
+	void BaseInitialize();	// 初期化
+	void BaseDraw();	// 描画
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(const Microsoft::WRL::ComPtr<ID3D12Device>& device, size_t sizeInBytes);
+	void CreateVertexResource();
+	void CreateVertexBufferView();
+	void CreateMaterialResource();
+	void CreateWvpResource();
 };
