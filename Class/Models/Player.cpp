@@ -8,7 +8,8 @@
 #define XINPUT_GAMEPAD_LEFT_TRIGGER    0x00FF
 #define XINPUT_GAMEPAD_RIGHT_TRIGGER   0xFF00
 
-void Player::Initialize() {
+void Player::Initialize(Vector3 position) {
+	transform.translate = position;
 	BaseInitialize();
 }
 void Player::Update() {
@@ -61,7 +62,7 @@ void Player::Update() {
 
 		// ブロックをつかめるかチェック
 		// LT or RTトリガーを押していたら >>> ブロックをつかむ
-		if ((!preLT && joyState.Gamepad.bLeftTrigger & XINPUT_GAMEPAD_LEFT_TRIGGER) || (!preRT && joyState.Gamepad.bRightTrigger & XINPUT_GAMEPAD_RIGHT_TRIGGER)) {
+		if ((!preLT && joyState.Gamepad.bLeftTrigger & XINPUT_GAMEPAD_LEFT_TRIGGER) || (!preRT && joyState.Gamepad.bRightTrigger > 0)) {
 			if (!isGrabbing && MapManager::GetInstance()->GetCurrentMap()->GrabBlock(this)) {
 				isGrabbing = true;
 			}
@@ -72,7 +73,7 @@ void Player::Update() {
 
 		// トリガー用のbool
 		preLT = joyState.Gamepad.bLeftTrigger & XINPUT_GAMEPAD_LEFT_TRIGGER;
-		preRT = joyState.Gamepad.bRightTrigger & XINPUT_GAMEPAD_RIGHT_TRIGGER;
+		preRT = joyState.Gamepad.bRightTrigger > 0;
 	}
 
 	// 当たり判定をチェック
@@ -80,6 +81,8 @@ void Player::Update() {
 	Vector3 size = { kPlayerCollisionSize_ * transform.scale.x, kPlayerCollisionSize_ * transform.scale.y, kPlayerCollisionSize_ * transform.scale.z };
 	collision.min = transform.translate - size;
 	collision.max = transform.translate + size;
+	collision.min.y += 0.010f;
+	collision.max.y += 0.010f;
 	transform.translate += MapManager::GetInstance()->GetCurrentMap()->IsCollisionVector3(collision);
 
 	ImGui::Begin("Player");
@@ -113,7 +116,8 @@ void Player::BaseInitialize() {
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
 
-	transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	transform.rotate = { 0.0f,0.0f,0.0f };
+	transform.scale = { 1.0f,1.0f,1.0f };
 	uvTransform_ = {
 		{1.0f,1.0f,1.0f},
 		{0.0f,0.0f,0.0f},

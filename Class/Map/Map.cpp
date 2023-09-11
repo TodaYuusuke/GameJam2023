@@ -16,15 +16,24 @@ void Map::Initialize() {
 				switch (mapChip_[x][y][z].type)
 				{
 					case BlockTypeID::Air:
-					case BlockTypeID::StartPosition:
 					case BlockTypeID::OutOfArea:
 						break;
-					case BlockTypeID::Wall:
+					case BlockTypeID::StartPosition:
+						startPosition_ = GetWorldPosition(x, y, z);
+						mapChip_[x][y][z].type = BlockTypeID::Air;
+						break;
+					case BlockTypeID::Wall: {
+						Block* newBlock = new Block();
+						newBlock->Initialize();
+						newBlock->transform.translate = GetWorldPosition(x, y, z);
+						newBlock->textureNum = UVCHEKER;
+						wallBlocks_.push_back(newBlock);
+						break; }
 					default:
 						mapChip_[x][y][z].blockPtr = new Block();
 						mapChip_[x][y][z].blockPtr->Initialize();
 						mapChip_[x][y][z].blockPtr->transform.translate = GetWorldPosition(x, y, z);
-						mapChip_[x][y][z].blockPtr->textureNum = BLOCK;
+						mapChip_[x][y][z].blockPtr->textureNum = BLOCK1;
 						break;
 				}
 			}
@@ -48,54 +57,55 @@ void Map::Update() {
 	ImGui::End();
 
 	// プレイヤーがブロックをつかんでいる間。移動処理はマップが扱う
-	if (player_ == nullptr) {
-		return;
+	if (player_ != nullptr) {
+		// 移動クールタイム
+		if (blockMoveCoolTime > 0) {
+			blockMoveCoolTime--;
+			return;
+		}
+		// 移動処理
+		XINPUT_STATE joyState;
+
+		// ゲームパッド状態取得
+		if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+
+			// デッドゾーンの設定
+			SHORT leftThumbX = Input::GetInstance()->ApplyDeadzone(joyState.Gamepad.sThumbLX);
+			SHORT leftThumbY = Input::GetInstance()->ApplyDeadzone(joyState.Gamepad.sThumbLY);
+
+			// プレイヤー移動
+			Vector3 move = {
+				(float)leftThumbX / SHRT_MAX,
+				0.0f,
+				(float)leftThumbY / SHRT_MAX
+			};
+			Vector3 rotation = DebugCamera::GetInstance()->GetCameraRotation();
+			rotation.x = 0.0f;	// X軸は捨てる
+			move = move * MakeRotateMatrix(rotation);
+			move.y = 0.0f;	// Y軸は捨てる
+			// 0.75以上の傾きでなければ検出しない
+			bool moved = false;
+			if (move.x < -0.75f) {	// 左移動
+				moved = MoveOnMapChip({ -1.0f,0.0f,0.0f }, grabbedBlockID, true);
+			}
+			else if (move.x > 0.75f) {	// 右移動
+				moved = MoveOnMapChip({ 1.0f,0.0f,0.0f }, grabbedBlockID, true);
+			}
+			else if (move.z < -0.75f) {	// 手前移動
+				moved = MoveOnMapChip({ 0.0f,0.0f,-1.0f }, grabbedBlockID, true);
+			}
+			else if (move.z > 0.75f) {	// 奥移動
+				moved = MoveOnMapChip({ 0.0f,0.0f,1.0f }, grabbedBlockID, true);
+			}
+
+			if (moved) {
+				blockMoveCoolTime = kBlockMoveCoolTime_;
+			}
+		}
 	}
 
-	// 移動クールタイム
-	if (blockMoveCoolTime > 0) {
-		blockMoveCoolTime--;
-		return;
-	}
-	// 移動処理
-	XINPUT_STATE joyState;
-
-	// ゲームパッド状態取得
-	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-		
-		// デッドゾーンの設定
-		SHORT leftThumbX = Input::GetInstance()->ApplyDeadzone(joyState.Gamepad.sThumbLX);
-		SHORT leftThumbY = Input::GetInstance()->ApplyDeadzone(joyState.Gamepad.sThumbLY);
-
-		// プレイヤー移動
-		Vector3 move = {
-			(float)leftThumbX / SHRT_MAX,
-			0.0f,
-			(float)leftThumbY / SHRT_MAX
-		};
-		Vector3 rotation = DebugCamera::GetInstance()->GetCameraRotation();
-		rotation.x = 0.0f;	// X軸は捨てる
-		move = move * MakeRotateMatrix(rotation);
-		move.y = 0.0f;	// Y軸は捨てる
-		// 0.75以上の傾きでなければ検出しない
-		bool moved = false;
-		if (move.x < -0.75f) {	// 左移動
-			moved = MoveOnMapChip({-1.0f,0.0f,0.0f});
-		}
-		else if (move.x > 0.75f) {	// 右移動
-			moved = MoveOnMapChip({ 1.0f,0.0f,0.0f });
-		}
-		else if (move.z < -0.75f) {	// 手前移動
-			moved = MoveOnMapChip({ 0.0f,0.0f,-1.0f });
-		}
-		else if (move.z > 0.75f) {	// 奥移動
-			moved = MoveOnMapChip({ 0.0f,0.0f,1.0f });
-		}
-
-		if (moved) {
-			blockMoveCoolTime = kBlockMoveCoolTime_;
-		}
-	}
+	// 落下処理
+	FallBlock();
 }
 void Map::Draw() {
 	for (Block* block : groundBlocks_) {
@@ -109,6 +119,9 @@ void Map::Draw() {
 				}
 			}
 		}
+	}
+	for (Block* block : wallBlocks_) {
+		block->Draw();
 	}
 }
 
@@ -170,6 +183,9 @@ void Map::ReverseZ() {
 			std::reverse(yRow.begin(), yRow.end()); // Z軸を逆順に並び替え
 		}
 	}
+}
+Vector3 Map::GetPlayerStartPosition() {
+	return startPosition_;
 }
 
 
@@ -244,6 +260,19 @@ Vector3 Map::IsCollisionVector3(AABB aabb) {
 					aabb.max += fixVector;
 					result += fixVector;
 				}
+				else if (mapChip_[x][y][z].type == BlockTypeID::Wall) {
+					// ブロックからAABBを計算する
+					AABB collision;
+					Vector3 blockSize = { (kBlockSize_ / 2.0f) * kBlockScale_ ,(kBlockSize_ / 2.0f) * kBlockScale_ , (kBlockSize_ / 2.0f) * kBlockScale_ };
+					collision.min = GetWorldPosition(x, y, z) - blockSize;
+					collision.max = GetWorldPosition(x, y, z) + blockSize;
+					// 当たり判定をチェック
+					Vector3 fixVector = aabb.IsCollisionVector3(collision);
+					// 計算するAABBを修正してから、当たり判定に戻る
+					aabb.min += fixVector;
+					aabb.max += fixVector;
+					result += fixVector;
+				}
 			}
 		}
 	}
@@ -272,7 +301,7 @@ bool Map::GrabBlock(Player* player) {
 	}
 
 	// つかんだ位置が場外ならfalseを返す
-	if (grabPos.x < 0.0f || grabPos.x >= GetXSize() || grabPos.z < 0.0f || grabPos.z >= GetZSize()) {
+	if (CheckOutOfArea(grabPos)) {
 		return false;
 	}
 	// つかんだ位置にブロックがないならばfalseを返す
@@ -285,7 +314,7 @@ bool Map::GrabBlock(Player* player) {
 	mapChip_[(int)playerPos.x][(int)playerPos.y][(int)playerPos.z].type = BlockTypeID::Player;
 	// プレイヤーのポインタをセット
 	player_ = player;
-	// プレイヤーのつかんだブロックのポインタ
+	// プレイヤーのつかんだブロックの座標
 	grabPosition_ = grabPos;
 	// プレイヤーのつかんだブロックID
 	grabbedBlockID = (int)mapChip_[(int)grabPos.x][(int)grabPos.y][(int)grabPos.z].type;
@@ -295,6 +324,9 @@ bool Map::GrabBlock(Player* player) {
 	// プレイヤーの向きをブロックのほうに合わせる
 	player->transform.rotate = r;
 
+	// ブロックムーブクールタイム
+	blockMoveCoolTime = kBlockMoveCoolTime_;
+	
 	return true;
 }
 void Map::ReleaseBlock() {
@@ -312,48 +344,55 @@ void Map::ReleaseBlock() {
 	}
 }
 
-bool Map::MoveOnMapChip(Vector3 destination) {
+bool Map::MoveOnMapChip(Vector3 destination, int moveBlockID, bool moveWithPlayer) {
+	int sizeX = (int)GetXSize();
+	int sizeY = (int)GetYSize();
+	int sizeZ = (int)GetZSize();
+
 	std::vector<std::vector<std::vector<MapChip>>> newMapChip = mapChip_;// 新しいマップチップ
+	Vector3 newPlayerMapChipPosition;
 
-	// まずはプレイヤーが移動できるかを検証
-	Vector3 newPlayerMapChipPosition = GetMapChipPosition(player_->transform.translate);
-	// プレイヤーの元の座標は消す
-	newMapChip[(int)newPlayerMapChipPosition.x][(int)newPlayerMapChipPosition.y][(int)newPlayerMapChipPosition.z].type = BlockTypeID::Air;
-	// プレイヤーの移動先
-	newPlayerMapChipPosition += destination;
-	// 場外検知
-	if (newPlayerMapChipPosition.x < 0.0f || newPlayerMapChipPosition.x >= GetXSize() || newPlayerMapChipPosition.z < 0.0f || newPlayerMapChipPosition.z >= GetZSize()) {
-		return false;
-	}
-	// 移動先が移動可能なマップチップかどうか
-	else if (GetMapChip(newPlayerMapChipPosition) != BlockTypeID::Air && (int)GetMapChip(newPlayerMapChipPosition) != grabbedBlockID) {
-		return false;
+	if (moveWithPlayer) {
+		// まずはプレイヤーが移動できるかを検証
+		newPlayerMapChipPosition = GetMapChipPosition(player_->transform.translate);
+		// プレイヤーの元の座標は消す
+		newMapChip[(int)newPlayerMapChipPosition.x][(int)newPlayerMapChipPosition.y][(int)newPlayerMapChipPosition.z].type = BlockTypeID::Air;
+		// プレイヤーの移動先
+		newPlayerMapChipPosition += destination;
+		// 場外検知
+		if (CheckOutOfArea(newPlayerMapChipPosition)) {
+			return false;
+		}
+		// 移動先が移動可能なマップチップかどうか
+		else if (GetMapChip(newPlayerMapChipPosition) != BlockTypeID::Air && (int)GetMapChip(newPlayerMapChipPosition) != moveBlockID) {
+			return false;
+		}
 	}
 
-	// まず新しいマップチップからつかんでいるブロックと同じIDを全消去
-	for (int x = 0; x < GetXSize(); x++) {
-		for (int y = 0; y < GetYSize(); y++) {
-			for (int z = 0; z < GetZSize(); z++) {
-				if ((int)newMapChip[x][y][z].type == grabbedBlockID) {
+	// まず新しいマップチップから動かすブロックと同じIDを全消去
+	for (int x = 0; x < sizeX; x++) {
+		for (int y = 0; y < sizeY; y++) {
+			for (int z = 0; z < sizeZ; z++) {
+				if ((int)newMapChip[x][y][z].type == moveBlockID) {
 					newMapChip[x][y][z].type = BlockTypeID::Air;
 					newMapChip[x][y][z].blockPtr = nullptr;
 				}
 			}
 		}
 	}
-	// 次につかんでいるブロック全部の座標を取得
-	for (int x = 0; x < GetXSize(); x++) {
-		for (int y = 0; y < GetYSize(); y++) {
-			for (int z = 0; z < GetZSize(); z++) {
-				if ((int)mapChip_[x][y][z].type == grabbedBlockID) {
+	// 次に動かすブロック全部の座標を取得
+	for (int x = 0; x < sizeX; x++) {
+		for (int y = 0; y < sizeY; y++) {
+			for (int z = 0; z < sizeZ; z++) {
+				if ((int)mapChip_[x][y][z].type == moveBlockID) {
 					Vector3 nextPos = { (float)x, (float)y, (float)z };
 					nextPos += destination;
 					// ブロックが１つでも場外にでるなら移動不可なのでreturn
-					if (nextPos.x < 0.0f || nextPos.x >= GetXSize() || nextPos.z < 0.0f || nextPos.z >= GetZSize()) {
+					if (CheckOutOfArea(nextPos)) {
 						return false;
 					}
 					// 移動先に問題がないかチェック
-					if (GetMapChip(nextPos) == BlockTypeID::Air || GetMapChip(nextPos) == BlockTypeID::Player || (int)GetMapChip(nextPos) == grabbedBlockID) {
+					if (GetMapChip(nextPos) == BlockTypeID::Air || GetMapChip(nextPos) == BlockTypeID::Player || (int)GetMapChip(nextPos) == moveBlockID) {
 						newMapChip[(int)nextPos.x][(int)nextPos.y][(int)nextPos.z].type = mapChip_[x][y][z].type;
 						newMapChip[(int)nextPos.x][(int)nextPos.y][(int)nextPos.z].blockPtr = mapChip_[x][y][z].blockPtr;
 					}
@@ -367,15 +406,17 @@ bool Map::MoveOnMapChip(Vector3 destination) {
 	// 全てのチェックを超えたので移動処理
 
 	// プレイヤーの位置を修正
-	newMapChip[(int)newPlayerMapChipPosition.x][(int)newPlayerMapChipPosition.y][(int)newPlayerMapChipPosition.z].type = BlockTypeID::Player;
-	newMapChip[(int)newPlayerMapChipPosition.x][(int)newPlayerMapChipPosition.y][(int)newPlayerMapChipPosition.z].blockPtr = nullptr;
-	player_->transform.translate = GetWorldPosition((int)newPlayerMapChipPosition.x, (int)newPlayerMapChipPosition.y, (int)newPlayerMapChipPosition.z);
-	// つかんでいるブロックの位置も修正
-	grabPosition_ += destination;
+	if (moveWithPlayer) {
+		newMapChip[(int)newPlayerMapChipPosition.x][(int)newPlayerMapChipPosition.y][(int)newPlayerMapChipPosition.z].type = BlockTypeID::Player;
+		newMapChip[(int)newPlayerMapChipPosition.x][(int)newPlayerMapChipPosition.y][(int)newPlayerMapChipPosition.z].blockPtr = nullptr;
+		player_->transform.translate = GetWorldPosition((int)newPlayerMapChipPosition.x, (int)newPlayerMapChipPosition.y, (int)newPlayerMapChipPosition.z);
+		// つかんでいるブロックの位置も修正
+		grabPosition_ += destination;
+	}
 	// ブロックの位置を修正
-	for (int x = 0; x < GetXSize(); x++) {
-		for (int y = 0; y < GetYSize(); y++) {
-			for (int z = 0; z < GetZSize(); z++) {
+	for (int x = 0; x < sizeX; x++) {
+		for (int y = 0; y < sizeY; y++) {
+			for (int z = 0; z < sizeZ; z++) {
 				if(newMapChip[x][y][z].blockPtr != nullptr)
 					newMapChip[x][y][z].blockPtr->transform.translate = GetWorldPosition((int)x, (int)y, (int)z);
 			}
@@ -386,7 +427,27 @@ bool Map::MoveOnMapChip(Vector3 destination) {
 	mapChip_ = newMapChip;
 	return true;
 }
+void Map::FallBlock() {
+	// 存在するブロックの全IDを取得
+	std::vector<int> ids;
 
+	for (int x = 0; x < GetXSize(); x++) {
+		for (int y = 0; y < GetYSize(); y++) {
+			for (int z = 0; z < GetZSize(); z++) {
+				if ((int)mapChip_[x][y][z].type >= 1 && (int)mapChip_[x][y][z].type <= 98) {
+					if (std::find(ids.begin(), ids.end(), (int)mapChip_[x][y][z].type) == ids.end()) {
+						ids.push_back((int)mapChip_[x][y][z].type);
+					}
+				}
+			}
+		}
+	}
+
+	// 全IDの落下処理を行う
+	for (int id : ids) {
+		MoveOnMapChip({ 0.0f,-1.0f,0.0f }, id, false);
+	}
+}
 void Map::CheckClearBlock() {
 	// 5個以上並ぶブロックの集まりを調べる
 	const int minSequenceLength = 5; // 5個以上の連続を検出するための最小長
@@ -499,4 +560,13 @@ void Map::CheckClearBlock() {
 			player_->ReleaseGrab();
 		}
 	}
+}
+
+bool Map::CheckOutOfArea(Vector3 position) {
+	if (position.x < 0.0f || position.x >= GetXSize() ||
+		position.y < 0.0f || position.y >= GetYSize() || 
+		position.z < 0.0f || position.z >= GetZSize()) {
+		return true;
+	}
+	return false;
 }

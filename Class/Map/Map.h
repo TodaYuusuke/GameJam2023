@@ -44,6 +44,9 @@ public: // メンバ関数
 	void ReverseZ();
 	// 指定した座標のマップIDをゲットする
 	BlockTypeID GetMapChip(Vector3 position) { return mapChip_[(int)position.x][(int)position.y][(int)position.z].type; }
+	// プレイヤーの初期座標を受け取る
+	Vector3 GetPlayerStartPosition();
+
 
 	// マップのノルマをセットする
 	void SetQuota(int quota1, int quota2, int quota3) { 
@@ -71,15 +74,19 @@ private: // メンバ定数
 	float kBlockSize_ = 2.0f;	// ブロック一つのサイズ
 	float kBlockScale_ = 1.0f;	// ブロックの共通スケール
 
-	int kBlockMoveCoolTime_ = 30;	// ブロックを動かす際のクールタイム
+	int kBlockMoveCoolTime_ = 10;	// ブロックを動かす際のクールタイム
 
 private: // メンバ変数
 	
 	// マップチップ
 	std::vector<std::vector<std::vector<MapChip>>> mapChip_;
 	
-	// 地面の描画用ブロックのデータ
+	// 地形描画用ブロックのデータ
 	std::vector<Block*> groundBlocks_;
+	std::vector<Block*> wallBlocks_;
+
+	// プレイヤーのスタート座標
+	Vector3 startPosition_;
 
 	// プレイヤーのポインタ
 	Player* player_ = nullptr;
@@ -102,7 +109,12 @@ private: // プライベートな関数
 	void AddGroundBlock();
 
 	// マップチップ上での移動処理
-	bool MoveOnMapChip(Vector3 destination);
+	bool MoveOnMapChip(Vector3 destination, int moveBlockID, bool moveWithPlayer);
+	// ブロックの落下処理
+	void FallBlock();
 	// マップチップ上での消滅処理
 	void CheckClearBlock();
+
+	// マップチップが場外かを検出する関数
+	bool CheckOutOfArea(Vector3 position);
 };

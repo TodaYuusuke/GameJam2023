@@ -9,7 +9,7 @@ void GameScene::Initialize() {
 	sceneNum = GAME_SCENE;
 
 	map_ = MapManager::GetInstance()->GetCurrentMap();
-	player_.Initialize();
+	player_.Initialize(MapManager::GetInstance()->GetCurrentMap()->GetPlayerStartPosition());	
 }
 
 void GameScene::Update() {
@@ -23,7 +23,6 @@ void GameScene::Update() {
 	ImGui::Begin("GameScene Debug");
 	ImGui::SliderInt("loadStageLevel", &loadStageNum_, 0, 7);
 	ImGui::End();
-
 
 	//camera_->Update();
 	player_.Update();

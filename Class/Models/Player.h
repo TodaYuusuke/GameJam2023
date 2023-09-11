@@ -22,7 +22,7 @@ class Player {
 public: // メンバ関数
 	ModelData GetModelData() { return modelData_; }
 
-	void Initialize();	// 初期化
+	void Initialize(Vector3 position);	// 初期化
 	void Update();	// 更新
 	void Draw();	// 描画
 
@@ -41,8 +41,8 @@ public:
 	// テクスチャナンバー
 	int textureNum;
 
-	// 移動の目標座標（ブロックつかみ中）
-	Vector3 goalPosition;
+	// 現在の座標（ブロックつかみ中の徐々に移動する処理を実装するため）
+	Vector3 currentPosition;
 
 private:
 	// トリガー用の変数
