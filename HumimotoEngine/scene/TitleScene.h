@@ -2,7 +2,6 @@
 #include "IScene.h"
 #include "../components/Input.h"
 #include "../object/Sprite.h"
-#include "../object/Sphere.h"
 
 #include "../../Class/Models/Block.h"
 #include "../../Class/Effect/EffectManager.h"
@@ -18,10 +17,10 @@ public:
 	void Finalize()override;
 private:
 	Sprite* sprite_;
-	Sphere* sphere_;
+	Sprite* titleSprite_;
+	//Sphere* sphere_;
 	int textureNum_;
 	Input* input_;
-	Vector3 pos_;
 
 	Block* block_;
 	EffectManager effectManager_;

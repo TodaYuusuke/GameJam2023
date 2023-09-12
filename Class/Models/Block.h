@@ -18,7 +18,7 @@
 
 class Block {
 public: // メンバ関数
-	ModelData GetModelData() { return modelData_; }
+	//ModelData GetModelData() { return modelData_; }
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(const Microsoft::WRL::ComPtr<ID3D12Device>& device, size_t sizeInBytes);
 
@@ -32,7 +32,7 @@ public: // メンバ関数
 
 	void Initialize();	// 初期化
 	//void Update();	// 更新
-	
+
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -64,7 +64,7 @@ private: // メンバ変数
 	Matrix4x4 worldViewProjectionMatrix_;
 
 	// モデルのポインタ
-	ModelData modelData_;
+	//ModelData modelData_;
 	// ワールドトランスフォーム
 	//WorldTransform worldTransform_;
 
