@@ -2,7 +2,6 @@
 #include "IScene.h"
 #include "../components/Input.h"
 #include "../object/Sprite.h"
-#include "../object/Sphere.h"
 
 #include "../../Class/Models/Block.h"
 #include "../../Class/Effect/EffectManager.h"
@@ -17,9 +16,15 @@ public:
 	void Draw() override;
 	void Finalize()override;
 private:
-	Sprite* sprite_;
-	Sphere* sphere_;
-	int textureNum_;
+	Sprite* background_;
+	Sprite* titleName_;
+	Sprite* guideA_Button_;
+	Sprite* guidePress_;
+
 	Input* input_;
-	Vector3 pos_;
+	EffectManager effectManager_;
+
+	// ƒ^ƒCƒgƒ‹‚ğ“®‚©‚·‚½‚ß”¼”
+	Vector2 titleNamePos_;
+	float theta_;
 };

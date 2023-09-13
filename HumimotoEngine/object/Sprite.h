@@ -11,14 +11,22 @@
 class Sprite
 {
 public:
+	/// 
+	/// Default Method
+	/// 
 	~Sprite();
 
-	void Initialize();
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="leftTop">左上の座標</param>
+	/// <param name="rightBottom">右下の座標</param>
+	void Initialize(Vector3 leftTop, Vector3 rightBottom);
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	/// <param name="pos">座標を入力</param>
+	/// <param name="pos">左上の座標を入力</param>
 	/// <param name="textureNum">textureManagerで登録したenum型の番号を入れる</param>
 	void Draw(Vector3 pos, int textureNum);
 

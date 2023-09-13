@@ -22,8 +22,11 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	// 画像の読み込み
 	mipImages_[UVCHEKER] = LoadTexture("resources/uvChecker.png");
 	mipImages_[MONSTERBALL] = LoadTexture("resources/monsterBall.png");
-	mipImages_[BLOCK] = LoadTexture("../Resources/block/default.png");
-	mipImages_[BLOCK1] = LoadTexture("../Resources/Texture/Block1.png");
+	mipImages_[BLOCK] = LoadTexture("../Resources/block/block.png");
+	mipImages_[TITLENAME] = LoadTexture("../Resources/title/titleName.png");
+	mipImages_[A_BUTTON] = LoadTexture("../Resources/title/guideButton/guide_pad_A.png");
+	mipImages_[GUIDE_PRESS] = LoadTexture("../Resources/title/guideText/guide_press.png");
+	mipImages_[BACKGROUND_GRAY] = LoadTexture("../Resources/title/background/background_gray.png");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
 	for (uint32_t i = 0; i < kMaxImages; i++) {

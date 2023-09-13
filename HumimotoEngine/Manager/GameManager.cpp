@@ -69,7 +69,7 @@ void GameManager::Initialize() {
 	mapManager->SetCurrentMap(0);
 
 	//初期シーンの設定
-	sceneNum_ = GAME_SCENE;
+	sceneNum_ = TITLE_SCENE;
 	// シーンごとの初期化
 	sceneArr_[sceneNum_]->Initialize();
 }
@@ -106,7 +106,7 @@ void GameManager::Run() {
 			sceneArr_[sceneNum_]->Update(); 
 
 			// ImGuiのパラメータを入れている
-			ImGuiAdjustParameter();
+			//ImGuiAdjustParameter();
 
 			///
 			/// 描画処理
@@ -152,7 +152,7 @@ void GameManager::BeginFrame() {
 	camera_->SettingCamera();
 
 	// グローバル変数の更新
-	GlobalVariables::GetInstance()->Update();
+	//GlobalVariables::GetInstance()->Update();
 }
 
 void GameManager::EndFrame() {
