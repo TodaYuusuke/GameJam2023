@@ -205,6 +205,9 @@
     <ClCompile Include="math\Vector3.cpp">
       <Filter>ソース ファイル\math</Filter>
     </ClCompile>
+    <ClCompile Include="..\Class\Models\Skydome.cpp">
+      <Filter>Class\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl">
@@ -373,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="..\Class\Utility\MyUtility.h">
       <Filter>Class\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Class\Models\Skydome.h">
+      <Filter>Class\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

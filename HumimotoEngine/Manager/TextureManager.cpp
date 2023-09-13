@@ -27,6 +27,7 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	mipImages_[A_BUTTON] = LoadTexture("../Resources/title/guideButton/guide_pad_A.png");
 	mipImages_[GUIDE_PRESS] = LoadTexture("../Resources/title/guideText/guide_press.png");
 	mipImages_[BACKGROUND_GRAY] = LoadTexture("../Resources/title/background/background_gray.png");
+	mipImages_[SKYDOME] = LoadTexture("../Resources/skydome/skydome.png");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
 	for (uint32_t i = 0; i < kMaxImages; i++) {
