@@ -16,12 +16,15 @@ public:
 	void Draw() override;
 	void Finalize()override;
 private:
-	Sprite* sprite_;
-	Sprite* titleSprite_;
-	//Sphere* sphere_;
-	int textureNum_;
-	Input* input_;
+	Sprite* background_;
+	Sprite* titleName_;
+	Sprite* guideA_Button_;
+	Sprite* guidePress_;
 
-	Block* block_;
+	Input* input_;
 	EffectManager effectManager_;
+
+	// ƒ^ƒCƒgƒ‹‚ğ“®‚©‚·‚½‚ß”¼”
+	Vector2 titleNamePos_;
+	float theta_;
 };

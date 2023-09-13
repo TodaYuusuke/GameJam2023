@@ -19,7 +19,7 @@ public: // メンバ関数
 private: // メンバ定数
 	// マップデータを示したファイルパス
 	const char* filePath_ = "../Resources/Const/MapData.csv";
-	const static int kMapChipMaxSize_ = 8;	// マップデータの数
+	const static int kMapChipMaxSize_ = 9;	// マップデータの数
 
 private: // メンバ変数
 	

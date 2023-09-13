@@ -1,19 +1,30 @@
-#include "TitleScene.h"
+﻿#include "TitleScene.h"
 #include "../Manager/GameManager.h"
 
 void TitleScene::Initialize() {
-	sprite_ = new Sprite();
-	sprite_->Initialize({0,0,0}, {1280,720,0});
-	titleSprite_ = new Sprite();
-	titleSprite_->Initialize({ 0,0,0 }, { 640,360,0 });
-	textureNum_ = UVCHEKER;
+	// タイトルの初期位置
+	titleNamePos_ = { 128,100 };
+
+	// スプライトの生成
+
+	// 背景
+	background_ = new Sprite();
+	background_->Initialize({0,0,1}, {1280,720,1});
+	// タイトル
+	titleName_ = new Sprite();
+	titleName_->Initialize({ 0,0,1 }, { 1024,256,1 });
+	// AボタンのUI
+	guideA_Button_ = new Sprite();
+	guideA_Button_->Initialize({ 0,0,1 }, { 64,64,1 });
+	// pressのテキスト
+	guidePress_ = new Sprite();
+	guidePress_->Initialize({ 0,0,1 }, { 128,64,1 });
+
 	input_ = Input::GetInstance();
-	block_ = new Block();
-	block_->Initialize();
-	block_->textureNum = BLOCK;
 }
 
 void TitleScene::Update() {
+	// Aボタンを押すとゲームシーン切り替え
 	XINPUT_STATE joyState{};
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 		return;
@@ -22,17 +33,21 @@ void TitleScene::Update() {
 		sceneNum = GAME_SCENE;
 	}
 
-
+	// タイトルを上下に動かす
+	theta_ += 1.0f / 90.0f * (float)M_PI;
+	titleNamePos_.y += sinf(theta_) * 0.25f;
 }
 
 void TitleScene::Draw() {
-	block_->Draw();
-	sprite_->Draw({0,0,0}, UVCHEKER);
-	titleSprite_->Draw({ 320,100,0 }, BLOCK);
+	background_->Draw({0,0,0}, BACKGROUND_GRAY);
+	titleName_->Draw({ titleNamePos_.x,titleNamePos_.y,0 }, TITLENAME);
+	guideA_Button_->Draw({ 704,500,0 }, A_BUTTON);
+	guidePress_->Draw({ 556,500,0 }, GUIDE_PRESS);
 }
 
 void TitleScene::Finalize() {
-	delete sprite_;
-	delete titleSprite_;
-	delete block_;
+	delete background_;
+	delete titleName_;
+	delete guideA_Button_;
+	delete guidePress_;
 }

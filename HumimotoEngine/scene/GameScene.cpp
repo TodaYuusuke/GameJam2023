@@ -20,7 +20,7 @@ void GameScene::Update() {
 	}
 
 	ImGui::Begin("GameScene Debug");
-	ImGui::SliderInt("loadStageLevel", &loadStageNum_, 0, 7);
+	ImGui::SliderInt("loadStageLevel", &loadStageNum_, 0, 8);
 	ImGui::End();
 
 
