@@ -58,10 +58,10 @@ public: // メンバ関数
 	}
 
 	// マップのサイズを受け取る
-	size_t GetXSize() { return mapChip_.size(); }
-	size_t GetYSize() { return (GetXSize() > 0) ? mapChip_[0].size() : 0; }
-	size_t GetZSize() { return (GetXSize() > 0 && GetYSize() > 0) ? mapChip_[0][0].size() : 0; }
-
+	size_t GetXSize();
+	size_t GetYSize();
+	size_t GetZSize();
+	
 	// マップの中心座標を受け取る
 	Vector3 GetMapCenterPosition();
 	// 共通スケールを受け取る

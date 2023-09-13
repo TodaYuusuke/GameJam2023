@@ -24,7 +24,6 @@ private:
 	Input* input_;
 	EffectManager effectManager_;
 
-	// ƒ^ƒCƒgƒ‹‚ğ“®‚©‚·‚½‚ß”¼”
 	Vector2 titleNamePos_;
 	float theta_;
 };

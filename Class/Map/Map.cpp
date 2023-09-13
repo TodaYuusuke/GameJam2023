@@ -39,7 +39,7 @@ void Map::Initialize() {
 						mapChip_[x][y][z].blockPtr->Initialize();
 						mapChip_[x][y][z].blockPtr->transform.translate = GetWorldPosition(x, y, z);
 						mapChip_[x][y][z].blockPtr->transform.scale = { kBlockScale_,kBlockScale_,kBlockScale_ };
-						mapChip_[x][y][z].blockPtr->textureNum = BLOCK1;
+						mapChip_[x][y][z].blockPtr->textureNum = BLOCK;
 						break;
 				}
 			}
@@ -192,6 +192,28 @@ bool Map::CheckPositionIsBlock(Vector3 position) {
 	// 場外ならtrueを返す
 	if (CheckOutOfArea(underPos)) { return true; }
 	return false;
+}
+
+size_t Map::GetXSize() {
+	if (mapChip_.empty()) {
+		// エラー処理: マップが空の場合、Xのサイズは不明です。
+		return 1;
+	}
+	return mapChip_.size();
+}
+size_t Map::GetYSize() {
+	if (mapChip_.empty() || mapChip_[0].empty()) {
+		// エラー処理: マップが空の場合、Yのサイズは不明です。
+		return 0;
+	}
+	return mapChip_[0].size();
+}
+size_t Map::GetZSize() {
+	if (mapChip_.empty() || mapChip_[0].empty() || mapChip_[0][0].empty()) {
+		// エラー処理: マップが空の場合、Zのサイズは不明です。
+		return 0;
+	}
+	return mapChip_[0][0].size();
 }
 
 Vector3 Map::GetWorldPosition(int x, int y, int z) {
