@@ -2,6 +2,12 @@
 #include "../Manager/GameManager.h"
 
 void GameClear::Initialize() {
+	// スプライトの生成
+
+	// 背景
+	gameclear_ = new Sprite();
+	gameclear_->Initialize({ 0,0,1 }, { 1280,720,1 });
+	sceneNum = GAMECLEAR_SCENE;
 	input_ = Input::GetInstance();
 }
 
@@ -18,9 +24,11 @@ void GameClear::Update() {
 }
 
 void GameClear::Draw() {
+	gameclear_->Draw({ 0,0,0 }, CLEARTITLE);
 
 }
 
 void GameClear::Finalize() {
+	delete gameclear_;
 
 }

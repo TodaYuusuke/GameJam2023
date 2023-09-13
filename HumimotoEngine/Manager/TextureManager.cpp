@@ -1,3 +1,4 @@
+
 #include "TextureManager.h"
 #include "../utility/ConvertString.h"
 #include <vector>
@@ -23,8 +24,11 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	mipImages_[UVCHEKER] = LoadTexture("resources/uvChecker.png");
 	mipImages_[MONSTERBALL] = LoadTexture("resources/monsterBall.png");
 	mipImages_[TITLENAME] = LoadTexture("../Resources/title/titleName.png");
+	mipImages_[CLEARTITLE] = LoadTexture("../Resources/clear/Result.png");
 	mipImages_[A_BUTTON] = LoadTexture("../Resources/title/guideButton/guide_pad_A.png");
 	mipImages_[GUIDE_PRESS] = LoadTexture("../Resources/title/guideText/guide_press.png");
+	mipImages_[GUIDE_TASK] = LoadTexture("../Resources/title/guideText/guide_task.png");
+	mipImages_[MANUAL] = LoadTexture("../Resources/title/guideText/Manual.png");
 	mipImages_[BACKGROUND_GRAY] = LoadTexture("../Resources/title/background/background_gray.png");
 	mipImages_[SKYDOME] = LoadTexture("../Resources/skydome/skydome.png");
 	mipImages_[DEFAULT_BLOCK] = LoadTexture("../Resources/block/block.png");
@@ -98,7 +102,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE TextureManager::GetCPUDescriptorHandle(const Microso
 	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = descriptorHeap.Get()->GetCPUDescriptorHandleForHeapStart();
 	handleCPU.ptr += (descriptorSize * index);
 	return handleCPU;
-} 
+}
 
 D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::GetGPUDescriptorHandle(const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t descriptorSize, uint32_t index) {
 	D3D12_GPU_DESCRIPTOR_HANDLE handleGPU = descriptorHeap.Get()->GetGPUDescriptorHandleForHeapStart();
@@ -268,5 +272,3 @@ void TextureManager::SettingDepthStencilState() {
 	// 比較関数はLessEqual。つまり、近ければ描画される
 	depthStencilDesc_.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 }
-
-
