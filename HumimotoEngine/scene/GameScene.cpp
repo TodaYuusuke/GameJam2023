@@ -22,7 +22,7 @@ void GameScene::Update() {
 	// クリアチェック
 	if (map_->CheckClear()) {
 		loadStageNum_++;
-		if (loadStageNum_ >= 7) {
+		if (loadStageNum_ > 7) {
 			sceneNum = GAMECLEAR_SCENE;
 		}
 		Retry();

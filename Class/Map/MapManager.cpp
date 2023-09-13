@@ -26,7 +26,7 @@ void MapManager::Initialize() {
 }
 
 void MapManager::LoadMapData() {
-	ifstream stageifs("../Resources/Const/MapData.csv");
+	ifstream stageifs(filePath_);
 	string line;
 
 	int stageLevel = 0;		// ステージのレベル
