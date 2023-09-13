@@ -4,6 +4,8 @@
 #include "../components/camera/DebugCamera.h"
 #include "../../Class/Map/MapManager.h"
 #include "../../Class/Models/Player.h"
+#include "../object/Sprite.h"
+#include "../components/Input.h"
 
 class GameManager;
 class GameScene : public IScene
@@ -33,6 +35,9 @@ private:
 	bool preX = false;
 
 private: // プライベートな関数
-
+	//ガイドテキスト
+	Sprite* manual_;
+	Sprite* guidetext_;
+	Input* input_;
 	void Retry();
 };
