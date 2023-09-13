@@ -20,6 +20,10 @@ void TitleScene::Initialize() {
 	guidePress_ = new Sprite();
 	guidePress_->Initialize({ 0,0,1 }, { 128,64,1 });
 
+	// 天球
+	skydome_ = new Skydome();
+	skydome_->Initialize();
+
 	input_ = Input::GetInstance();
 }
 
@@ -39,10 +43,11 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw() {
-	background_->Draw({0,0,0}, BACKGROUND_GRAY);
-	titleName_->Draw({ titleNamePos_.x,titleNamePos_.y,0 }, TITLENAME);
-	guideA_Button_->Draw({ 704,500,0 }, A_BUTTON);
-	guidePress_->Draw({ 556,500,0 }, GUIDE_PRESS);
+	//background_->Draw({0,0,0}, BACKGROUND_GRAY);
+	//titleName_->Draw({ titleNamePos_.x,titleNamePos_.y,0 }, TITLENAME);
+	//guideA_Button_->Draw({ 704,500,0 }, A_BUTTON);
+	//guidePress_->Draw({ 556,500,0 }, GUIDE_PRESS);
+	skydome_->Draw();
 }
 
 void TitleScene::Finalize() {
@@ -50,4 +55,5 @@ void TitleScene::Finalize() {
 	delete titleName_;
 	delete guideA_Button_;
 	delete guidePress_;
+	delete skydome_;
 }
