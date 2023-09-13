@@ -14,6 +14,7 @@ void GameScene::Initialize() {
 	manual_ = new Sprite();
 	manual_->Initialize({ 0,0,1 }, { 1280,720,1 });
 	input_ = Input::GetInstance();
+	loadStageNum_ = 0;
 	Retry();
 }
 
@@ -21,7 +22,7 @@ void GameScene::Update() {
 	// クリアチェック
 	if (map_->CheckClear()) {
 		loadStageNum_++;
-		if (loadStageNum_ >= 9) {
+		if (loadStageNum_ >= 7) {
 			sceneNum = GAMECLEAR_SCENE;
 		}
 		Retry();
@@ -37,10 +38,6 @@ void GameScene::Update() {
 		}
 		preX = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X;
 	}
-
-	ImGui::Begin("GameScene Debug");
-	ImGui::SliderInt("loadStageLevel", &loadStageNum_, 0, 8);
-	ImGui::End();
 
 	player_.Update();
 	map_->Update();

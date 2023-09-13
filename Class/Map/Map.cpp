@@ -31,7 +31,15 @@ void Map::Initialize() {
 						newBlock->Initialize();
 						newBlock->transform.translate = GetWorldPosition(x, y, z);
 						newBlock->transform.scale = { kBlockScale_,kBlockScale_,kBlockScale_ };
-						newBlock->textureNum = UVCHEKER;
+						newBlock->textureNum = GROUND;
+						wallBlocks_.push_back(newBlock);
+						break; }
+					case BlockTypeID::Wall2: {
+						Block* newBlock = new Block();
+						newBlock->Initialize();
+						newBlock->transform.translate = GetWorldPosition(x, y, z);
+						newBlock->transform.scale = { kBlockScale_,kBlockScale_,kBlockScale_ };
+						newBlock->textureNum = WALL;
 						wallBlocks_.push_back(newBlock);
 						break; }
 					default:
@@ -39,7 +47,7 @@ void Map::Initialize() {
 						mapChip_[x][y][z].blockPtr->Initialize();
 						mapChip_[x][y][z].blockPtr->transform.translate = GetWorldPosition(x, y, z);
 						mapChip_[x][y][z].blockPtr->transform.scale = { kBlockScale_,kBlockScale_,kBlockScale_ };
-						mapChip_[x][y][z].blockPtr->textureNum = DEFAULT_BLOCK + ((int)mapChip_[x][y][z].type % 10);
+						mapChip_[x][y][z].blockPtr->textureNum = DEFAULT_BLOCK + (((int)mapChip_[x][y][z].type - 1) % 10) + 1;
 						break;
 				}
 			}
@@ -234,7 +242,7 @@ void Map::AddGroundBlock() {
 			newBlock->Initialize();
 			newBlock->transform.translate = GetWorldPosition(x, -1, z);
 			newBlock->transform.scale = { kBlockScale_,kBlockScale_, kBlockScale_ };
-			newBlock->textureNum = DEFAULT_BLOCK;
+			newBlock->textureNum = GROUND;
 			groundBlocks_.push_back(newBlock);
 		}
 	}
@@ -478,23 +486,26 @@ bool Map::MoveOnMapChip(Vector3 destination, int moveBlockID, bool moveWithPlaye
 void Map::FallBlock() {
 	// 存在するブロックの全IDを取得
 	std::vector<int> ids;
+	bool isFelled = false;
 
-	for (int x = 0; x < GetXSize(); x++) {
-		for (int y = 0; y < GetYSize(); y++) {
-			for (int z = 0; z < GetZSize(); z++) {
-				if ((int)mapChip_[x][y][z].type >= 1 && (int)mapChip_[x][y][z].type <= 98) {
-					if (std::find(ids.begin(), ids.end(), (int)mapChip_[x][y][z].type) == ids.end()) {
-						ids.push_back((int)mapChip_[x][y][z].type);
+	do {
+		for (int x = 0; x < GetXSize(); x++) {
+			for (int y = 0; y < GetYSize(); y++) {
+				for (int z = 0; z < GetZSize(); z++) {
+					if ((int)mapChip_[x][y][z].type >= 1 && (int)mapChip_[x][y][z].type <= 98) {
+						if (std::find(ids.begin(), ids.end(), (int)mapChip_[x][y][z].type) == ids.end()) {
+							ids.push_back((int)mapChip_[x][y][z].type);
+						}
 					}
 				}
 			}
 		}
-	}
 
-	// 全IDの落下処理を行う
-	for (int id : ids) {
-		MoveOnMapChip({ 0.0f,-1.0f,0.0f }, id, false);
-	}
+		// 全IDの落下処理を行う
+		for (int id : ids) {
+			isFelled = MoveOnMapChip({ 0.0f,-1.0f,0.0f }, id, false);
+		}
+	} while (isFelled);
 }
 void Map::CheckClearBlock() {
 	// 5個以上並ぶブロックの集まりを調べる
@@ -644,7 +655,7 @@ void Map::FloodFill(int x, int y, int z, int newID, int oldID) {
 	int dz[] = { 0, 0, 0, 0, -1, 1 };
 
 	mapChip_[x][y][z].type = (BlockTypeID)newID;
-	mapChip_[x][y][z].blockPtr->textureNum = DEFAULT_BLOCK + ((int)mapChip_[x][y][z].type % 10);
+	mapChip_[x][y][z].blockPtr->textureNum = DEFAULT_BLOCK + (((int)mapChip_[x][y][z].type - 1) % 10) + 1;
 	for (int i = 0; i < 6; ++i) {
 		FloodFill(x + dx[i], y + dy[i], z + dz[i], newID, oldID);
 	}

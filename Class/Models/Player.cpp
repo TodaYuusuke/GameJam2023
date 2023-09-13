@@ -13,6 +13,9 @@ void Player::Initialize(Vector3 position) {
 	transform.rotate = { 0.0f,0.0f,0.0f };
 	float scale = MapManager::GetInstance()->GetCurrentMap()->GetBlockScale();
 	transform.scale = { scale,scale,scale };
+
+	textureNum = PLAYER;
+
 	BaseInitialize();
 }
 void Player::Update() {
@@ -109,7 +112,7 @@ void Player::Update() {
 	collision.min = transform.translate - size;
 	collision.max = transform.translate + size;
 	collision.min.y += 0.010f;
-	collision.max.y += 0.010f;
+	collision.max.y -= 0.100f;
 	transform.translate += MapManager::GetInstance()->GetCurrentMap()->IsCollisionVector3(collision);
 }
 void Player::Draw() {

@@ -23,3 +23,4 @@ private:
 	bool preA = false;
 	float theta_;
 };
+

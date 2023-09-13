@@ -29,9 +29,10 @@ void TitleScene::Update() {
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 		return;
 	}
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A || input_->TriggerKey(DIK_SPACE)) {
+	if (!preA && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
 		sceneNum = GAME_SCENE;
 	}
+	preA = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A;
 
 	// タイトルを上下に動かす
 	theta_ += 1.0f / 90.0f * (float)M_PI;
