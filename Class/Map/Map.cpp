@@ -154,19 +154,8 @@ void Map::ClearMapChip() {
 		for (int y = 0; y < GetYSize(); y++) {
 			for (int z = 0; z < GetZSize(); z++) {
 				mapChip_[x][y][z].type = BlockTypeID::OutOfArea;	// エリア外で初期化
-				if (mapChip_[x][y][z].blockPtr != nullptr) {
-					delete mapChip_[x][y][z].blockPtr;
-					mapChip_[x][y][z].blockPtr = nullptr;
-				}
 			}
 		}
-	}
-	// ブロックも消滅させる
-	for (Block* block : groundBlocks_) {
-		delete block;
-	}
-	for (Block* block : wallBlocks_) {
-		delete block;
 	}
 }
 void Map::SetMapChip(Vector3 position, BlockTypeID id) {
