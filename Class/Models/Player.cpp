@@ -111,11 +111,6 @@ void Player::Update() {
 	collision.min.y += 0.010f;
 	collision.max.y += 0.010f;
 	transform.translate += MapManager::GetInstance()->GetCurrentMap()->IsCollisionVector3(collision);
-
-	ImGui::Begin("Player");
-	ImGui::DragFloat3("translate", &transform.translate.x);
-	ImGui::DragFloat3("rotation", &transform.rotate.x);
-	ImGui::End();
 }
 void Player::Draw() {
 	BaseDraw();
