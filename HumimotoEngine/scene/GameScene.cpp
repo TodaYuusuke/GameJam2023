@@ -24,8 +24,11 @@ void GameScene::Update() {
 		loadStageNum_++;
 		if (loadStageNum_ > 7) {
 			sceneNum = GAMECLEAR_SCENE;
+			return;
 		}
-		Retry();
+		else {
+			Retry();
+		}
 	}
 
 	XINPUT_STATE joyState;
@@ -63,5 +66,4 @@ void GameScene::Retry() {
 
 	camera_->Initialize();
 	camera_->SetRotationCenterPosition();
-
 }

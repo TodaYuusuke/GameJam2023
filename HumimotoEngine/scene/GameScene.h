@@ -31,7 +31,7 @@ private:
 	// プレイヤー
 	Player player_;
 
-	int loadStageNum_ = 0;	// 読み込むステージの番号
+	int loadStageNum_;	// 読み込むステージの番号
 	bool preX = false;
 
 private: // プライベートな関数
