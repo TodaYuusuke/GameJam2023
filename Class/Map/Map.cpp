@@ -51,16 +51,6 @@ void Map::Update() {
 	// ブロック消滅処理
 	CheckClearBlock();
 
-	ImGui::Begin("MapChip");
-	for (int y = 0; y < GetYSize(); y++) {
-		for (int z = 0; z < GetZSize(); z++) {
-			ImGui::Text("%d, %d, %d, %d, %d, %d, %d, %d", (int)mapChip_[0][y][z].type, (int)mapChip_[1][y][z].type, (int)mapChip_[2][y][z].type, (int)mapChip_[3][y][z].type, (int)mapChip_[4][y][z].type, (int)mapChip_[5][y][z].type, (int)mapChip_[6][y][z].type, (int)mapChip_[7][y][z].type);
-		}
-		ImGui::Text("");
-	}
-	ImGui::Text("moveCoolTime %d", blockMoveCoolTime);
-	ImGui::End();
-
 	// プレイヤーがブロックをつかんでいる間。移動処理はマップが扱う
 	if (player_ != nullptr) {
 		// 移動クールタイム
@@ -392,8 +382,15 @@ bool Map::MoveOnMapChip(Vector3 destination, int moveBlockID, bool moveWithPlaye
 			return false;
 		}
 		// 移動先が移動可能なマップチップかどうか
-		else if (GetMapChip(newPlayerMapChipPosition) != BlockTypeID::Air && (int)GetMapChip(newPlayerMapChipPosition) != moveBlockID) {
+		if (GetMapChip(newPlayerMapChipPosition) != BlockTypeID::Air && (int)GetMapChip(newPlayerMapChipPosition) != moveBlockID) {
 			return false;
+		}
+		// 移動先の下が足場かどうか
+		if (!CheckOutOfArea(newPlayerMapChipPosition + Vector3{ 0.0f,-1.0f,0.0f })) {
+			int underID = (int)GetMapChip(newPlayerMapChipPosition + Vector3{ 0.0f,-1.0f,0.0f });
+			if (underID < 1 || underID > 99) {
+				return false;
+			}
 		}
 	}
 

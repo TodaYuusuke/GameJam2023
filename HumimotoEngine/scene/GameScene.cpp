@@ -3,28 +3,30 @@
 
 void GameScene::Initialize() {
 	camera_ = DebugCamera::GetInstance();
-	camera_->Initialize();
-	camera_->SetRotationCenterPosition();
-
 	sceneNum = GAME_SCENE;
 
-	map_ = MapManager::GetInstance()->GetCurrentMap();
-	player_.Initialize(MapManager::GetInstance()->GetCurrentMap()->GetPlayerStartPosition());	
+	Retry();
 }
 
 void GameScene::Update() {
+	// クリアチェック
+	if (map_->CheckClear()) {
+		loadStageNum_++;
+		if (loadStageNum_ >= 9) {
+			sceneNum = GAMECLEAR_SCENE;
+		}
+		Retry();
+	}
+
 	// ホットリロード
 	if (Input::GetInstance()->TriggerKey(DIK_R)) {
-		MapManager::GetInstance()->Initialize();
-		MapManager::GetInstance()->SetCurrentMap(loadStageNum_);
-		Initialize();
+		Retry();
 	}
 
 	ImGui::Begin("GameScene Debug");
-	ImGui::SliderInt("loadStageLevel", &loadStageNum_, 0, 7);
+	ImGui::SliderInt("loadStageLevel", &loadStageNum_, 0, 8);
 	ImGui::End();
 
-	//camera_->Update();
 	player_.Update();
 	map_->Update();
 }
@@ -35,4 +37,15 @@ void GameScene::Draw() {
 }
 
 void GameScene::Finalize() {
+}
+
+void GameScene::Retry() {
+	MapManager::GetInstance()->Initialize();
+	MapManager::GetInstance()->SetCurrentMap(loadStageNum_);
+
+	map_ = MapManager::GetInstance()->GetCurrentMap();
+	player_.Initialize(MapManager::GetInstance()->GetCurrentMap()->GetPlayerStartPosition());
+
+	camera_->Initialize();
+	camera_->SetRotationCenterPosition();
 }

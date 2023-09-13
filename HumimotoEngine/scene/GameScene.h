@@ -29,5 +29,8 @@ private:
 
 	// デバッグ用の変数
 	int loadStageNum_ = 0;	// 読み込むステージの番号
-};
 
+private: // プライベートな関数
+
+	void Retry();
+};
