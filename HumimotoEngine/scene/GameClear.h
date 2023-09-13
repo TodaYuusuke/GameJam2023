@@ -1,5 +1,7 @@
 #pragma once
 #include "IScene.h"
+#include "../components/Input.h"
+#include "../object/Sprite.h"
 
 class GameManager;
 class GameClear : public IScene
@@ -16,6 +18,7 @@ public:
 
 	void Finalize()override;
 private:
-
+	Input* input_;
+	bool preA = false;
 };
 

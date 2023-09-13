@@ -26,4 +26,5 @@ private:
 
 	Vector2 titleNamePos_;
 	float theta_;
+	bool preA = false;
 };
