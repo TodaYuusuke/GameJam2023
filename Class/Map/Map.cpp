@@ -360,6 +360,14 @@ bool Map::GrabBlock(Player* player) {
 
 	// プレイヤーをマップチップにセット
 	Vector3 playerPos = GetMapChipPosition(player->transform.translate);
+
+	// 掴んだ位置とプレイヤーの足元のブロックIDが同じならばfalseを返す
+	if (!CheckOutOfArea({ playerPos.x,playerPos.y - 1.0f,playerPos.z })) {
+		if ((int)GetMapChip(grabPos) == (int)GetMapChip({ playerPos.x,playerPos.y - 1.0f,playerPos.z })) {
+			return false;
+		}
+	}
+
 	mapChip_[(int)playerPos.x][(int)playerPos.y][(int)playerPos.z].type = BlockTypeID::Player;
 	// プレイヤーのポインタをセット
 	player_ = player;

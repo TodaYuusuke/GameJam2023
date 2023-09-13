@@ -21,8 +21,6 @@ TextureManager::~TextureManager() {
 
 void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& srvDescriptorHeap) {
 	// 画像の読み込み
-	mipImages_[UVCHEKER] = LoadTexture("resources/uvChecker.png");
-	mipImages_[MONSTERBALL] = LoadTexture("resources/monsterBall.png");
 	mipImages_[TITLENAME] = LoadTexture("../Resources/title/titleName.png");
 	mipImages_[CLEARTITLE] = LoadTexture("../Resources/clear/Result.png");
 	mipImages_[A_BUTTON] = LoadTexture("../Resources/title/guideButton/guide_pad_A.png");
