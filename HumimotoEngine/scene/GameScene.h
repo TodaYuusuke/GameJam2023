@@ -1,5 +1,6 @@
 #pragma once
 #include "IScene.h"
+#include "../../Class/Models/Skydome.h"
 #include "../components/camera/DebugCamera.h"
 #include "../../Class/Map/MapManager.h"
 #include "../../Class/Models/Player.h"
@@ -21,6 +22,7 @@ public:
 private:
 	// カメラのポインタ
 	DebugCamera* camera_ = nullptr;
+	Skydome* skydome_ = nullptr;
 
 	// マップデータ
 	Map* map_ = nullptr;

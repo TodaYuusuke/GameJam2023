@@ -4,6 +4,9 @@
 void GameScene::Initialize() {
 	camera_ = DebugCamera::GetInstance();
 	sceneNum = GAME_SCENE;
+	// 天球
+	skydome_ = new Skydome();
+	skydome_->Initialize();
 
 	Retry();
 }
@@ -38,6 +41,7 @@ void GameScene::Update() {
 }
 
 void GameScene::Draw() {
+	skydome_->Draw();
 	map_->Draw();
 	player_.Draw();
 }

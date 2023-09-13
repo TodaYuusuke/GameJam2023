@@ -2,7 +2,6 @@
 #include "IScene.h"
 #include "../components/Input.h"
 #include "../object/Sprite.h"
-#include "../../Class/Models/Skydome.h"
 
 #include "../../Class/Models/Block.h"
 #include "../../Class/Effect/EffectManager.h"
@@ -21,8 +20,6 @@ private:
 	Sprite* titleName_;
 	Sprite* guideA_Button_;
 	Sprite* guidePress_;
-
-	Skydome* skydome_;
 
 	Input* input_;
 	EffectManager effectManager_;

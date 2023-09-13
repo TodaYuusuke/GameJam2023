@@ -39,7 +39,7 @@ void Map::Initialize() {
 						mapChip_[x][y][z].blockPtr->Initialize();
 						mapChip_[x][y][z].blockPtr->transform.translate = GetWorldPosition(x, y, z);
 						mapChip_[x][y][z].blockPtr->transform.scale = { kBlockScale_,kBlockScale_,kBlockScale_ };
-						mapChip_[x][y][z].blockPtr->textureNum = BLOCK;
+						mapChip_[x][y][z].blockPtr->textureNum = DEFAULT_BLOCK + ((int)mapChip_[x][y][z].type % 10);
 						break;
 				}
 			}
@@ -234,7 +234,7 @@ void Map::AddGroundBlock() {
 			newBlock->Initialize();
 			newBlock->transform.translate = GetWorldPosition(x, -1, z);
 			newBlock->transform.scale = { kBlockScale_,kBlockScale_, kBlockScale_ };
-			newBlock->textureNum = BLOCK;
+			newBlock->textureNum = DEFAULT_BLOCK;
 			groundBlocks_.push_back(newBlock);
 		}
 	}
@@ -644,7 +644,7 @@ void Map::FloodFill(int x, int y, int z, int newID, int oldID) {
 	int dz[] = { 0, 0, 0, 0, -1, 1 };
 
 	mapChip_[x][y][z].type = (BlockTypeID)newID;
-
+	mapChip_[x][y][z].blockPtr->textureNum = DEFAULT_BLOCK + ((int)mapChip_[x][y][z].type % 10);
 	for (int i = 0; i < 6; ++i) {
 		FloodFill(x + dx[i], y + dy[i], z + dz[i], newID, oldID);
 	}

@@ -22,12 +22,24 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	// 画像の読み込み
 	mipImages_[UVCHEKER] = LoadTexture("resources/uvChecker.png");
 	mipImages_[MONSTERBALL] = LoadTexture("resources/monsterBall.png");
-	mipImages_[BLOCK] = LoadTexture("../Resources/block/block.png");
 	mipImages_[TITLENAME] = LoadTexture("../Resources/title/titleName.png");
 	mipImages_[A_BUTTON] = LoadTexture("../Resources/title/guideButton/guide_pad_A.png");
 	mipImages_[GUIDE_PRESS] = LoadTexture("../Resources/title/guideText/guide_press.png");
 	mipImages_[BACKGROUND_GRAY] = LoadTexture("../Resources/title/background/background_gray.png");
 	mipImages_[SKYDOME] = LoadTexture("../Resources/skydome/skydome.png");
+	mipImages_[DEFAULT_BLOCK] = LoadTexture("../Resources/block/block.png");
+	mipImages_[BLOCK1] = LoadTexture("../Resources/Texture/Block0.png");
+	mipImages_[BLOCK2] = LoadTexture("../Resources/Texture/Block1.png");
+	mipImages_[BLOCK3] = LoadTexture("../Resources/Texture/Block2.png");
+	mipImages_[BLOCK4] = LoadTexture("../Resources/Texture/Block3.png");
+	mipImages_[BLOCK5] = LoadTexture("../Resources/Texture/Block4.png");
+	mipImages_[BLOCK6] = LoadTexture("../Resources/Texture/Block5.png");
+	mipImages_[BLOCK7] = LoadTexture("../Resources/Texture/Block6.png");
+	mipImages_[BLOCK8] = LoadTexture("../Resources/Texture/Block7.png");
+	mipImages_[BLOCK9] = LoadTexture("../Resources/Texture/Block8.png");
+	mipImages_[BLOCK10] = LoadTexture("../Resources/Texture/Block9.png");
+	mipImages_[WALL] = LoadTexture("../Resources/Texture/Block9.png");
+	mipImages_[GROUND] = LoadTexture("../Resources/Texture/Ground.png");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
 	for (uint32_t i = 0; i < kMaxImages; i++) {

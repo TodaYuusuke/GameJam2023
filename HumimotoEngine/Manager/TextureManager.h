@@ -19,12 +19,24 @@
 enum TextureName {
 	UVCHEKER,
 	MONSTERBALL,
-	BLOCK,
 	TITLENAME,
 	A_BUTTON,
 	GUIDE_PRESS,
 	BACKGROUND_GRAY,
-	SKYDOME
+	SKYDOME,
+	DEFAULT_BLOCK,
+	BLOCK1,
+	BLOCK2,
+	BLOCK3,
+	BLOCK4,
+	BLOCK5,
+	BLOCK6,
+	BLOCK7,
+	BLOCK8,
+	BLOCK9,
+	BLOCK10,
+	WALL,
+	GROUND,
 };
 
 class TextureManager
@@ -82,7 +94,7 @@ public:
 	void ComUninit();
 public:
 	// [0]はSpriteに使用しているuvChecker.png(textureSrvHandleGPUは三角形にも使用)[1]はSphereに使用しているmonsterBall.png
-	static const uint32_t kMaxImages = 8;
+	static const uint32_t kMaxImages = 20;
 	DirectX::ScratchImage mipImages_[kMaxImages];
 	D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU_[kMaxImages];
 	D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU_[kMaxImages];
