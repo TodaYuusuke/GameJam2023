@@ -1,2 +1,12 @@
-# Blender 3.5.0 MTL File: 'None'
+# Blender 3.5.0 MTL File: 'lift_3.blend'
 # www.blender.org
+
+newmtl M_lift
+Ka 1.000000 1.000000 1.000000
+Ks 0.018182 0.018182 0.018182
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd player.png
+map_Ns M_lift_Roughness.png

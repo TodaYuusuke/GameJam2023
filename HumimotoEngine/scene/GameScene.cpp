@@ -32,10 +32,6 @@ void GameScene::Update() {
 		preX = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X;
 	}
 
-	ImGui::Begin("GameScene Debug");
-	ImGui::SliderInt("loadStageLevel", &loadStageNum_, 0, 8);
-	ImGui::End();
-
 	player_.Update();
 	map_->Update();
 }

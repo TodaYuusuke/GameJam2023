@@ -13,6 +13,9 @@ void Player::Initialize(Vector3 position) {
 	transform.rotate = { 0.0f,0.0f,0.0f };
 	float scale = MapManager::GetInstance()->GetCurrentMap()->GetBlockScale();
 	transform.scale = { scale,scale,scale };
+
+	textureNum = PLAYER;
+
 	BaseInitialize();
 }
 void Player::Update() {
