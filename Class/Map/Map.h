@@ -15,6 +15,7 @@ class Player;
 enum class BlockTypeID : int {
 	Air = 0,
 	Wall = 99,
+	Wall2 = -99,
 	StartPosition = 100,
 	OutOfArea = -1,
 	Player = -2,

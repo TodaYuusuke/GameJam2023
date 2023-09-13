@@ -38,7 +38,7 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	mipImages_[BLOCK8] = LoadTexture("../Resources/Texture/Block7.png");
 	mipImages_[BLOCK9] = LoadTexture("../Resources/Texture/Block8.png");
 	mipImages_[BLOCK10] = LoadTexture("../Resources/Texture/Block9.png");
-	mipImages_[WALL] = LoadTexture("../Resources/Texture/Block9.png");
+	mipImages_[WALL] = LoadTexture("../Resources/Texture/Wall.png");
 	mipImages_[GROUND] = LoadTexture("../Resources/Texture/Ground.png");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
