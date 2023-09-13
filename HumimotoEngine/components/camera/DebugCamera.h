@@ -22,6 +22,10 @@ private: // メンバ定数
 	const float kCameraTurnSpeed = 0.07f;
 	const float kCameraZoomSpeed = 0.5f;
 
+	float kCameraZLimitMin = -10.0f;
+	float kCameraZLimitMax = -40.0f;
+	float kCameraRotationXLimitMin = 0.3f;
+	float kCameraRotationXLimitMax = 1.5f;
 
 private: // メンバ変数
 	// 回転中心座標

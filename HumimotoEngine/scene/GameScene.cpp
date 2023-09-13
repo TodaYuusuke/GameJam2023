@@ -18,9 +18,15 @@ void GameScene::Update() {
 		Retry();
 	}
 
-	// ホットリロード
-	if (Input::GetInstance()->TriggerKey(DIK_R)) {
-		Retry();
+	XINPUT_STATE joyState;
+
+	// ゲームパッド状態取得
+	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+		// ホットリロード
+		if (!preX && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X) {
+			Retry();
+		}
+		preX = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X;
 	}
 
 	ImGui::Begin("GameScene Debug");

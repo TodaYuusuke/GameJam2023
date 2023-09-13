@@ -47,6 +47,21 @@ void DebugCamera::Update() {
 	if (offsetRotation_.z < 0.0f)
 		offsetRotation_.z += 6.28f;
 
+	// カメラ制限
+	if (kCameraZLimitMin < offset_.z) {
+		offset_.z = kCameraZLimitMin;
+	}
+	else if (kCameraZLimitMax > offset_.z) {
+		offset_.z = kCameraZLimitMax;
+	}
+
+	if (kCameraRotationXLimitMin > offsetRotation_.x) {
+		offsetRotation_.x = kCameraRotationXLimitMin;
+	}
+	else if (kCameraRotationXLimitMax < offsetRotation_.x) {
+		offsetRotation_.x = kCameraRotationXLimitMax;
+	}
+
 	Vector3 offset = TransformNormal(offset_, MakeRotateMatrix(offsetRotation_));
 
 	// 座標をオフセット分ずらす

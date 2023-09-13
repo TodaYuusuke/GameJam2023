@@ -27,8 +27,8 @@ private:
 	// プレイヤー
 	Player player_;
 
-	// デバッグ用の変数
 	int loadStageNum_ = 0;	// 読み込むステージの番号
+	bool preX = false;
 
 private: // プライベートな関数
 
