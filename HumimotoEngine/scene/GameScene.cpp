@@ -7,7 +7,7 @@ void GameScene::Initialize() {
 	// 天球
 	skydome_ = new Skydome();
 	skydome_->Initialize();
-
+	loadStageNum_ = 0;
 	Retry();
 }
 
