@@ -10,6 +10,9 @@
 
 void Player::Initialize(Vector3 position) {
 	transform.translate = position;
+	transform.rotate = { 0.0f,0.0f,0.0f };
+	float scale = MapManager::GetInstance()->GetCurrentMap()->GetBlockScale();
+	transform.scale = { scale,scale,scale };
 	BaseInitialize();
 }
 void Player::Update() {
@@ -34,7 +37,31 @@ void Player::Update() {
 			rotation.x = 0.0f;	// X軸は捨てる
 			move = move * MakeRotateMatrix(rotation);
 			move.y = 0.0f;	// Y軸は捨てる
-			transform.translate += move * kPlayerMovementSpeed;
+			Vector3 nextPos = transform.translate + (move * kPlayerMovementSpeed * transform.scale.x);
+			Vector3 resultPos = nextPos;
+
+			// 移動先が落下しないかを確認
+			if (!MapManager::GetInstance()->GetCurrentMap()->IsCollisionBool({ nextPos.x,nextPos.y - 2.0f * transform.scale.x,nextPos.z })) {
+				if (MapManager::GetInstance()->GetCurrentMap()->IsCollisionBool({ nextPos.x,nextPos.y - 4.0f * transform.scale.x,nextPos.z })) {
+					nextPos.y -= 2.0f * transform.scale.x;
+					resultPos.y -= 2.0f * transform.scale.x;
+				}
+				else {
+					if (MapManager::GetInstance()->GetCurrentMap()->IsCollisionBool({ nextPos.x ,nextPos.y - 2.0f * transform.scale.x, transform.translate.z })) {
+						resultPos.z = transform.translate.z;
+					}
+					else {
+						resultPos.x = transform.translate.x;
+					}
+					if (MapManager::GetInstance()->GetCurrentMap()->IsCollisionBool({ transform.translate.x,nextPos.y - 2.0f * transform.scale.x, nextPos.z })) {
+						resultPos.x = transform.translate.x;
+					}
+					else {
+						resultPos.z = transform.translate.z;
+					}
+				}
+			}
+			transform.translate = resultPos;
 
 			// キャラクターの向きを決定する
 			if (Length(move) > 0.0f) {
@@ -116,8 +143,6 @@ void Player::BaseInitialize() {
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
 
-	transform.rotate = { 0.0f,0.0f,0.0f };
-	transform.scale = { 1.0f,1.0f,1.0f };
 	uvTransform_ = {
 		{1.0f,1.0f,1.0f},
 		{0.0f,0.0f,0.0f},

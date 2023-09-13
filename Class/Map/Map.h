@@ -32,7 +32,7 @@ public: // メンバ関数
 	void Initialize();	// 初期化
 	void Update();	// 更新
 	void Draw();	// 描画
-	
+
 	// クリアか判定する
 	bool CheckClear();
 
@@ -47,9 +47,11 @@ public: // メンバ関数
 	// プレイヤーの初期座標を受け取る
 	Vector3 GetPlayerStartPosition();
 
+	// プレイヤーの落下処理判別用（指定した座標の１つ下が)
+	bool CheckPositionIsBlock(Vector3 position);
 
 	// マップのノルマをセットする
-	void SetQuota(int quota1, int quota2, int quota3) { 
+	void SetQuota(int quota1, int quota2, int quota3) {
 		quota[0] = quota1;
 		quota[1] = quota2;
 		quota[2] = quota3;
@@ -62,9 +64,12 @@ public: // メンバ関数
 
 	// マップの中心座標を受け取る
 	Vector3 GetMapCenterPosition();
+	// 共通スケールを受け取る
+	float GetBlockScale() { return kBlockScale_; }
 
 	// マップの当たり判定を取る
 	Vector3 IsCollisionVector3(AABB aabb);
+	bool IsCollisionBool(Vector3 position);
 	// ブロックをつかめるか判定を取る
 	bool GrabBlock(Player* player);
 	// ブロックを手放す際の処理
@@ -100,6 +105,9 @@ private: // メンバ変数
 	// マップのノルマ
 	int quota[3];
 
+	// 現在の最大ブロックID
+	int currentMaxID = 1;
+
 private: // プライベートな関数
 	// xyzからワールド座標を求める
 	Vector3 GetWorldPosition(int x, int y, int z);
@@ -117,4 +125,8 @@ private: // プライベートな関数
 
 	// マップチップが場外かを検出する関数
 	bool CheckOutOfArea(Vector3 position);
+
+
+	void FloodFill(int x, int y, int z, int newID, int oldID);
+	void AssignIDs(int checkID);
 };

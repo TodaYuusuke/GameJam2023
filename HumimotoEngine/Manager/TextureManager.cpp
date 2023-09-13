@@ -61,7 +61,7 @@ void TextureManager::Initialize() {
 }
 
 void TextureManager::Release() {
-	for (uint32_t i = 0; i < 2; i++) {
+	for (uint32_t i = 0; i < kMaxImages; i++) {
 		textureResource_[i].Reset();
 		intermediateResource_[i].Reset();
 	}

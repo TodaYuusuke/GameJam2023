@@ -3,9 +3,13 @@
 #include "../../HumimotoEngine/components/Input.h"
 #include "../../HumimotoEngine/components/camera/DebugCamera.h"
 #include "../Models/Player.h"
+#include <unordered_set>
 
 
 void Map::Initialize() {
+	// スケールを調整
+	kBlockScale_ = std::min<float>({ 5.0f / GetXSize(), 5.0f / GetYSize(), 5.0f / GetZSize() });
+
 	// 地面のブロックを生成
 	AddGroundBlock();
 
@@ -26,6 +30,7 @@ void Map::Initialize() {
 						Block* newBlock = new Block();
 						newBlock->Initialize();
 						newBlock->transform.translate = GetWorldPosition(x, y, z);
+						newBlock->transform.scale = { kBlockScale_,kBlockScale_,kBlockScale_ };
 						newBlock->textureNum = UVCHEKER;
 						wallBlocks_.push_back(newBlock);
 						break; }
@@ -33,6 +38,7 @@ void Map::Initialize() {
 						mapChip_[x][y][z].blockPtr = new Block();
 						mapChip_[x][y][z].blockPtr->Initialize();
 						mapChip_[x][y][z].blockPtr->transform.translate = GetWorldPosition(x, y, z);
+						mapChip_[x][y][z].blockPtr->transform.scale = { kBlockScale_,kBlockScale_,kBlockScale_ };
 						mapChip_[x][y][z].blockPtr->textureNum = BLOCK1;
 						break;
 				}
@@ -40,7 +46,6 @@ void Map::Initialize() {
 		}
 	}
 
-	// スケールを調整
 }
 void Map::Update() {
 	// ブロック消滅処理
@@ -49,7 +54,7 @@ void Map::Update() {
 	ImGui::Begin("MapChip");
 	for (int y = 0; y < GetYSize(); y++) {
 		for (int z = 0; z < GetZSize(); z++) {
-			ImGui::Text("%d, %d, %d, %d, %d", (int)mapChip_[0][y][z].type, (int)mapChip_[1][y][z].type, (int)mapChip_[2][y][z].type, (int)mapChip_[3][y][z].type, (int)mapChip_[4][y][z].type);
+			ImGui::Text("%d, %d, %d, %d, %d, %d, %d, %d", (int)mapChip_[0][y][z].type, (int)mapChip_[1][y][z].type, (int)mapChip_[2][y][z].type, (int)mapChip_[3][y][z].type, (int)mapChip_[4][y][z].type, (int)mapChip_[5][y][z].type, (int)mapChip_[6][y][z].type, (int)mapChip_[7][y][z].type);
 		}
 		ImGui::Text("");
 	}
@@ -164,11 +169,9 @@ void Map::SetMapChip(Vector3 position, BlockTypeID id) {
 	while (x >= mapChip_.size()) {
 		mapChip_.push_back(std::vector<std::vector<MapChip>>()); // 新しいx層を追加
 	}
-
 	while (y >= mapChip_[x].size()) {
 		mapChip_[x].push_back(std::vector<MapChip>()); // 新しいy層を追加
 	}
-
 	while (z >= mapChip_[x][y].size()) {
 		mapChip_[x][y].push_back(MapChip()); // 新しいz層を追加
 	}
@@ -176,6 +179,10 @@ void Map::SetMapChip(Vector3 position, BlockTypeID id) {
 	// 指定した位置にidを設定
 	mapChip_[x][y][z].type = id;
 	mapChip_[x][y][z].blockPtr = nullptr;
+	// ブロックのIDならば最大値を保持
+	if ((int)id >= 1 && (int)id <= 98) {
+		if (currentMaxID < (int)id) { currentMaxID = (int)id; }
+	}
 }
 void Map::ReverseZ() {
 	for (std::vector<std::vector<MapChip>>& xRow : mapChip_) {
@@ -188,6 +195,14 @@ Vector3 Map::GetPlayerStartPosition() {
 	return startPosition_;
 }
 
+bool Map::CheckPositionIsBlock(Vector3 position) {
+	Vector3 underPos = GetMapChipPosition(position);
+	underPos.y -= 1.0f;
+
+	// 場外ならtrueを返す
+	if (CheckOutOfArea(underPos)) { return true; }
+	return false;
+}
 
 Vector3 Map::GetWorldPosition(int x, int y, int z) {
 	return { x * kBlockSize_ * kBlockScale_, y * kBlockSize_ * kBlockScale_, z * kBlockSize_ * kBlockScale_ };
@@ -206,6 +221,7 @@ void Map::AddGroundBlock() {
 			Block* newBlock = new Block();
 			newBlock->Initialize();
 			newBlock->transform.translate = GetWorldPosition(x, -1, z);
+			newBlock->transform.scale = { kBlockScale_,kBlockScale_, kBlockScale_ };
 			newBlock->textureNum = BLOCK;
 			groundBlocks_.push_back(newBlock);
 		}
@@ -225,8 +241,8 @@ Vector3 Map::GetMapCenterPosition() {
 Vector3 Map::IsCollisionVector3(AABB aabb) {
 	// 最終的に返すベクトル
 	Vector3 result = { 0.0f,0.0f,0.0f };
-	float limitX = (GetXSize() * (kBlockSize_ * kBlockScale_)) - 1.0f;
-	float limitZ = (GetZSize() * (kBlockSize_ * kBlockScale_)) - 1.0f;
+	float limitX = (GetXSize() * (kBlockSize_ * kBlockScale_)) - (kBlockSize_ / 2.0f * kBlockScale_);
+	float limitZ = (GetZSize() * (kBlockSize_ * kBlockScale_)) - (kBlockSize_ / 2.0f * kBlockScale_);
 
 	// 場外に出ていないかチェック
 	if (aabb.min.x < -1.0f) {
@@ -279,6 +295,18 @@ Vector3 Map::IsCollisionVector3(AABB aabb) {
 
 	return result;
 }
+bool Map::IsCollisionBool(Vector3 position) {
+	Vector3 mapChipPos = GetMapChipPosition(position);
+	// 場外チェック
+	if (CheckOutOfArea(mapChipPos)) { return true; }
+
+	int id = (int)mapChip_[(int)mapChipPos.x][(int)mapChipPos.y][(int)mapChipPos.z].type;
+	if (id >= 1 && id <= 99) { return true; }
+
+	return false;
+}
+
+
 bool Map::GrabBlock(Player* player) {
 	Vector3 grabPos = GetMapChipPosition(player->transform.translate);	// つかむ座標を計算する
 	Vector3 r{ 0.0f,0.0f,0.0f };
@@ -459,6 +487,7 @@ void Map::CheckClearBlock() {
 
 	// 最終的に消滅する全ブロックの座標
 	std::vector<Vector3> deleteBlocks;
+	std::vector<int> deleteBlockIDs;
 
 	// X軸方向の検出
 	for (int x = 0; x < sizeX; x++) {
@@ -483,6 +512,7 @@ void Map::CheckClearBlock() {
 					// 並んでいる座標全てをvectorに追加
 					for (int i = 0; i < consecutiveCount; i++) {
 						deleteBlocks.push_back(Vector3{static_cast<float>(x + i),static_cast<float>(y),static_cast<float>(z) });
+						deleteBlockIDs.push_back((int)mapChip_[x + i][y][z].type);
 					}
 				}
 			}
@@ -512,6 +542,7 @@ void Map::CheckClearBlock() {
 					// 並んでいる座標全てをvectorに追加
 					for (int i = 0; i < consecutiveCount; i++) {
 						deleteBlocks.push_back(Vector3{ static_cast<float>(x),static_cast<float>(y + i),static_cast<float>(z) });
+						deleteBlockIDs.push_back((int)mapChip_[x][y + i][z].type);
 					}
 				}
 			}
@@ -541,6 +572,7 @@ void Map::CheckClearBlock() {
 					// 並んでいる座標全てをvectorに追加
 					for (int i = 0; i < consecutiveCount; i++) {
 						deleteBlocks.push_back(Vector3{ static_cast<float>(x),static_cast<float>(y),static_cast<float>(z + i) });
+						deleteBlockIDs.push_back((int)mapChip_[x][y][z + i].type);
 					}
 				}
 			}
@@ -552,6 +584,14 @@ void Map::CheckClearBlock() {
 		mapChip_[(int)vector.x][(int)vector.y][(int)vector.z].type = BlockTypeID::Air;
 		delete mapChip_[(int)vector.x][(int)vector.y][(int)vector.z].blockPtr;
 		mapChip_[(int)vector.x][(int)vector.y][(int)vector.z].blockPtr = nullptr;
+	}
+
+	// 削除するブロックIDの重複を削除
+	std::unordered_set<int> uniqueSet(deleteBlockIDs.begin(), deleteBlockIDs.end());
+	deleteBlockIDs.assign(uniqueSet.begin(), uniqueSet.end());
+	// 削除したブロックのIDが、まだ残っているかチェック
+	for (int id : uniqueSet) {
+		AssignIDs(id);
 	}
 
 	// もしつかんでいるブロックが消えたならつかみ解除
@@ -569,4 +609,41 @@ bool Map::CheckOutOfArea(Vector3 position) {
 		return true;
 	}
 	return false;
+}
+
+
+
+
+void Map::FloodFill(int x, int y, int z, int newID, int oldID) {
+	if (CheckOutOfArea({(float)x, (float)y, (float)z}) || (int)mapChip_[x][y][z].type != oldID) {
+		return;
+	}
+	// 上、下、左、右、前、後、の移動方向
+	int dx[] = { -1, 1, 0, 0, 0, 0 };
+	int dy[] = { 0, 0, -1, 1, 0, 0 };
+	int dz[] = { 0, 0, 0, 0, -1, 1 };
+
+	mapChip_[x][y][z].type = (BlockTypeID)newID;
+
+	for (int i = 0; i < 6; ++i) {
+		FloodFill(x + dx[i], y + dy[i], z + dz[i], newID, oldID);
+	}
+}
+void Map::AssignIDs(int checkID) {
+	int sizeX = (int)GetXSize();
+	int sizeY = (int)GetYSize();
+	int sizeZ = (int)GetZSize();
+	//std::vector<std::vector<std::vector<bool>>> visited(sizeX, std::vector<std::vector<bool>>(sizeY, std::vector<bool>(sizeZ, false)));	// 訪問済みフラグ
+
+	for (int x = 0; x < sizeX; x++) {
+		for (int y = 0; y < sizeY; y++) {
+			for (int z = 0; z < sizeZ; z++) {
+				if ((int)mapChip_[x][y][z].type == checkID) {
+					currentMaxID++;
+					if (currentMaxID >= 99) { currentMaxID = 0; }
+					FloodFill(x, y, z, currentMaxID, checkID);
+				}
+			}
+		}
+	}
 }
